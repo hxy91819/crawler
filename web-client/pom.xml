@@ -22,6 +22,12 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!--个人工程依赖 end-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.4</version>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

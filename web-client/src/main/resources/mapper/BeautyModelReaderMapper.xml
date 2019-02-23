@@ -5,6 +5,7 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="org" jdbcType="VARCHAR" property="org"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="release_date" jdbcType="VARCHAR" property="releaseDate"/>
         <result column="model_name" jdbcType="VARCHAR" property="modelName"/>
         <result column="pic_count" jdbcType="INTEGER" property="picCount"/>
         <result column="entrance_url" jdbcType="VARCHAR" property="entranceUrl"/>
@@ -12,7 +13,7 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, org, title, model_name, pic_count, entrance_url, create_time, update_time
+    id, org, title, release_date, model_name, pic_count, entrance_url, create_time, update_time
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select

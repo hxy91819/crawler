@@ -7,11 +7,13 @@
   </delete>
     <insert id="insert" parameterType="bwjava.entity.BeautyModel">
     insert into t_beauty_model (id, org, title, 
-      model_name, pic_count, entrance_url, 
-      create_time, update_time)
+      release_date, model_name, pic_count, 
+      entrance_url, create_time, update_time
+      )
     values (#{id,jdbcType=BIGINT}, #{org,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
-      #{modelName,jdbcType=VARCHAR}, #{picCount,jdbcType=INTEGER}, #{entranceUrl,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      #{releaseDate,jdbcType=VARCHAR}, #{modelName,jdbcType=VARCHAR}, #{picCount,jdbcType=INTEGER}, 
+      #{entranceUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
     <insert id="insertSelective" parameterType="bwjava.entity.BeautyModel">
         insert into t_beauty_model
@@ -24,6 +26,9 @@
             </if>
             <if test="title != null">
                 title,
+            </if>
+            <if test="releaseDate != null">
+                release_date,
             </if>
             <if test="modelName != null">
                 model_name,
@@ -51,6 +56,9 @@
             <if test="title != null">
                 #{title,jdbcType=VARCHAR},
             </if>
+            <if test="releaseDate != null">
+                #{releaseDate,jdbcType=VARCHAR},
+            </if>
             <if test="modelName != null">
                 #{modelName,jdbcType=VARCHAR},
             </if>
@@ -77,6 +85,9 @@
             <if test="title != null">
                 title = #{title,jdbcType=VARCHAR},
             </if>
+            <if test="releaseDate != null">
+                release_date = #{releaseDate,jdbcType=VARCHAR},
+            </if>
             <if test="modelName != null">
                 model_name = #{modelName,jdbcType=VARCHAR},
             </if>
@@ -99,6 +110,7 @@
     update t_beauty_model
     set org = #{org,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
+      release_date = #{releaseDate,jdbcType=VARCHAR},
       model_name = #{modelName,jdbcType=VARCHAR},
       pic_count = #{picCount,jdbcType=INTEGER},
       entrance_url = #{entranceUrl,jdbcType=VARCHAR},

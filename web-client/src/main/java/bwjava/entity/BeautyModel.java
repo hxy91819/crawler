@@ -13,6 +13,9 @@ public class BeautyModel implements Serializable {
     /** 标题 */
     private String title;
 
+    /** 发布日期 */
+    private String releaseDate;
+
     /** 模特名称 */
     private String modelName;
 
@@ -58,6 +61,16 @@ public class BeautyModel implements Serializable {
     /** 标题 */
     public void setTitle(String title) {
         this.title = title == null ? null : title.trim();
+    }
+
+    /** 发布日期 */
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    /** 发布日期 */
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate == null ? null : releaseDate.trim();
     }
 
     /** 模特名称 */

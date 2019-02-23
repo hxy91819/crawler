@@ -4,6 +4,7 @@ import bwjava.dao.write.BeautyModelWriterDao;
 import bwjava.service.BeautyService;
 import com.bwjava.entity.CrawlMeta;
 import com.bwjava.service.SimpleCrawlJob;
+import lombok.Data;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -39,6 +40,13 @@ public class BeautyServiceImpl implements BeautyService {
 /**
  * 模特基本信息
  */
+@Data
 class ModelInfo {
+    private String title;
 
+    private String org;
+
+    private Integer picCount;
+
+    private String modelName;
 }
