@@ -10,6 +10,9 @@ public class BeautyModel implements Serializable {
     /** 机构 */
     private String org;
 
+    /** 标题 */
+    private String title;
+
     /** 模特名称 */
     private String modelName;
 
@@ -45,6 +48,16 @@ public class BeautyModel implements Serializable {
     /** 机构 */
     public void setOrg(String org) {
         this.org = org == null ? null : org.trim();
+    }
+
+    /** 标题 */
+    public String getTitle() {
+        return title;
+    }
+
+    /** 标题 */
+    public void setTitle(String title) {
+        this.title = title == null ? null : title.trim();
     }
 
     /** 模特名称 */

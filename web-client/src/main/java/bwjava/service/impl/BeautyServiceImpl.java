@@ -34,7 +34,6 @@ public class BeautyServiceImpl implements BeautyService {
         return 0;
     }
 
-    private
 }
 
 /**

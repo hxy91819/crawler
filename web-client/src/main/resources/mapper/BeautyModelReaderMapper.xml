@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bwjava.dao.read.BeautyModelReaderDao">
-  <resultMap id="BaseResultMap" type="bwjava.entity.BeautyModel">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="org" jdbcType="VARCHAR" property="org" />
-    <result column="model_name" jdbcType="VARCHAR" property="modelName" />
-    <result column="pic_count" jdbcType="INTEGER" property="picCount" />
-    <result column="entrance_url" jdbcType="VARCHAR" property="entranceUrl" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, org, model_name, pic_count, entrance_url, create_time, update_time
+    <resultMap id="BaseResultMap" type="bwjava.entity.BeautyModel">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="org" jdbcType="VARCHAR" property="org"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="model_name" jdbcType="VARCHAR" property="modelName"/>
+        <result column="pic_count" jdbcType="INTEGER" property="picCount"/>
+        <result column="entrance_url" jdbcType="VARCHAR" property="entranceUrl"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, org, title, model_name, pic_count, entrance_url, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_beauty_model
-    where id = #{id,jdbcType=BIGINT}
-  </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_beauty_model
+        where id = #{id,jdbcType=BIGINT}
+    </select>
 </mapper>
