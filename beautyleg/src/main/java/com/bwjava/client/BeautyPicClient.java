@@ -1,30 +1,41 @@
-package com.bwjava.controller;
+package com.bwjava.client;
 
 import com.bwjava.dto.ModelInfo;
 import com.bwjava.entity.CrawlMeta;
 import com.bwjava.entity.CrawlResult;
 import com.bwjava.service.SimpleCrawlJob;
 import com.bwjava.util.ExecutorServiceUtil;
+import lombok.AllArgsConstructor;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
- * 美图录爬虫实例
+ * 单个模特的页面爬虫
  *
  * @author chenjing
  * @date 2019-02-24 15:04
  */
-public class BeautyLegClient {
+@AllArgsConstructor
+public class BeautyPicClient {
+
+    /**
+     * 每页图片数量
+     */
+    private int picCountPerPage = 4;
+
+    /**
+     * 入口地址
+     */
+    private String url;
 
     /**
      * 获取模特基本信息
      *
-     * @param url 网址
      * @return 模特基本信息
      */
-    public ModelInfo getModelInfo(String url) {
+    public ModelInfo getModelInfo() {
         // 从第一页抓取标题和基本信息并入库
         Set<List<String>> selectRule = new HashSet<>();
         List<String> titleRule = Collections.singletonList("h1");
@@ -61,18 +72,14 @@ public class BeautyLegClient {
         return modelInfo;
     }
 
-    /**
-     * 每页图片数量
-     */
-    private static final int PIC_COUNT_PER_PAGE = 4;
 
     /**
      * 获取每一页的图片url
-     * @param url 入口url
-     * @param picCount 所有页面的数量
+     *
+     * @param picCount 图片总数
      * @return 所有图片的url list
      */
-    public List<String> getPicUrls(String url, Integer picCount) {
+    public List<String> getPicUrls(Integer picCount) {
         Set<List<String>> selectRule = new HashSet<>();
         List<String> imgRule = Collections.singletonList("img[class=content_img]");
         selectRule.add(imgRule);
@@ -85,7 +92,7 @@ public class BeautyLegClient {
 
         SimpleCrawlJob job = new SimpleCrawlJob();
         job.setCrawlMeta(crawlMeta);
-        job.setDepth(picCount / PIC_COUNT_PER_PAGE - 1);
+        job.setDepth(picCount / picCountPerPage - 1);
 
         Future<?> submit = ExecutorServiceUtil.getInstance().submit(job);
         try {

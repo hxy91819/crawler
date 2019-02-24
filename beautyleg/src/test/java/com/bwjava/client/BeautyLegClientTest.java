@@ -1,4 +1,4 @@
-package com.bwjava.controller;
+package com.bwjava.client;
 
 import org.junit.Test;
 
@@ -7,17 +7,16 @@ import org.junit.Test;
  * @date 2019-02-24 15:25
  */
 public class BeautyLegClientTest {
-    private BeautyLegClient client = new BeautyLegClient();
-
     private String url = "https://www.meitulu.com/item/15665.html";
 
+    private BeautyPicClient client = new BeautyPicClient(4, url);
     @Test
     public void testGetModelInfo() {
-        client.getModelInfo(url);
+        client.getModelInfo();
     }
 
     @Test
     public void testGetPics() {
-        client.getPicUrls(url, 48);
+        client.getPicUrls(48);
     }
 }

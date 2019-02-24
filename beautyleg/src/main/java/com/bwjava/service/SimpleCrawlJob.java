@@ -110,6 +110,9 @@ public class SimpleCrawlJob extends AbstractJob {
                     case "img":
                         list.add(element.attr("src"));
                         break;
+                    case "a":
+                        list.add(element.attr("href"));
+                        break;
                     // 默认提取文字
                     default:
                         list.add(element.text());
