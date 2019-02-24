@@ -41,8 +41,9 @@ public class SnowFlake {
 
     /**
      * 构造方法
+     *
      * @param datacenterId 0~31
-     * @param machineId 0~31
+     * @param machineId    0~31
      */
     public SnowFlake(long datacenterId, long machineId) {
         if (datacenterId > MAX_DATACENTER_NUM || datacenterId < 0) {
