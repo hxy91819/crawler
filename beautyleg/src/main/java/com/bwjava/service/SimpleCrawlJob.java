@@ -110,10 +110,9 @@ public class SimpleCrawlJob extends AbstractJob {
                     case "img":
                         list.add(element.attr("src"));
                         break;
-                    // a 标签，提取文字
-                    case "a":
-                        list.add(element.text());
+                    // 默认提取文字
                     default:
+                        list.add(element.text());
                         break;
                 }
             }
@@ -142,7 +141,13 @@ public class SimpleCrawlJob extends AbstractJob {
     private Elements doDocumentFilter(Collection<String> rule, Document doc) {
         Preconditions.checkArgument(!rule.isEmpty());
         Iterator<String> iterator = rule.iterator();
-        Elements select = doc.select(iterator.next());
+        Elements select;
+        try {
+            select = doc.select(iterator.next());
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return new Elements();
+        }
         while (iterator.hasNext()) {
             select = select.select(iterator.next());
         }

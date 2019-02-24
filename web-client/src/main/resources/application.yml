@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     name: test
-    url: jdbc:mysql://192.168.99.100:3306/spring-boot-demo?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://127.0.0.1:3306/crawler?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true&useSSL=false&zeroDateTimeBehavior=convertToNull
     username: root
     password: 123456
     # 使用druid数据源
@@ -26,7 +26,7 @@ spring:
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
   redis:
-    host: 192.168.99.100
+    host: 127.0.0.1
     #redis密码，没有密码的可以用～表示
     password: ~
     port: 6379

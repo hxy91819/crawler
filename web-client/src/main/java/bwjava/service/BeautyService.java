@@ -13,4 +13,5 @@ public interface BeautyService {
      */
     int saveSingleBeautyModel(String url);
 
+    int testSnow();
 }

@@ -3,7 +3,6 @@ package bwjava.controller;
 
 import bwjava.entity.UserInfo;
 import bwjava.service.RedisService;
-import bwjava.service.UserInfoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +23,6 @@ public class TestCtrl {
 
     @Resource
     private RedisService redisService;
-
-    @Resource
-    private UserInfoService userInfoService;
 
     @RequestMapping(value = "/index")
     public String index() {
@@ -68,11 +64,11 @@ public class TestCtrl {
      */
     @GetMapping("/getUser/{id}")
     public UserInfo get(@PathVariable("id") int id) {
-        try {
-            return userInfoService.selectByPrimaryKey(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            return userInfoService.selectByPrimaryKey(id);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         return null;
     }
 
