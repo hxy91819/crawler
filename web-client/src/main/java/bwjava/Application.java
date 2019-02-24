@@ -20,11 +20,11 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
  * @version V2.0.0
  */
 
+@SuppressWarnings("SpringBootApplicationSetup")
+@EnableAutoConfiguration
 @SpringBootApplication(exclude = {MybatisAutoConfiguration.class, DataSourceAutoConfiguration.class})
 @ServletComponentScan
-@EnableAutoConfiguration
 @MapperScan("bwjava.dao")
-//@SpringBootApplication
 public class Application extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer {
 
     @Value("${server.port}")
