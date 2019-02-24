@@ -23,4 +23,8 @@ public class BeautyModelServiceTest {
         System.out.println(beautyModelService.save());
     }
 
+    @Test
+    public void testGetBasic(){
+        beautyModelService.crawlModalData("https://www.meitulu.com/item/15665.html");
+    }
 }
