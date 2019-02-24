@@ -41,4 +41,32 @@ public class SimpleCrawlJobTest {
         List<Map<List<String>, List<String>>> collect = crawlResults.stream().map(CrawlResult::getResult).collect(Collectors.toList());
         System.out.println(collect);
     }
+
+    @Test
+    public void testFirstPage() {
+        String url = "https://www.meitulu.com/item/16720.html";
+        // 从第一页抓取标题和基本信息并入库
+        Set<List<String>> selectRule = new HashSet<>();
+        List<String> titleRule = Collections.singletonList("h1");
+        selectRule.add(titleRule);
+
+        CrawlMeta crawlMeta = new CrawlMeta(url, selectRule);
+
+        SimpleCrawlJob job = new SimpleCrawlJob();
+        job.setCrawlMeta(crawlMeta);
+        job.setDepth(0);
+
+        Thread thread = new Thread(job);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        List<String> strings = job.getCrawlResults().get(0).getResult().get(titleRule);
+//        if (!strings.isEmpty()) {
+//            return strings.get(0);
+//        }
+    }
 }

@@ -1,6 +1,6 @@
 -- 模特信息表
 CREATE TABLE crawler.`t_beauty_model` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '主键编号',
+  `id` BIGINT(20) NOT NULL COMMENT '主键编号',
   `org` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '机构',
   `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '标题',
   `release_date` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '发布日期',
@@ -14,7 +14,7 @@ CREATE TABLE crawler.`t_beauty_model` (
 
 -- 模特图片表
 CREATE TABLE crawler.`t_beauty_model_pic` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '主键编号',
+  `id` BIGINT(20) NOT NULL COMMENT '主键编号',
   `model_id` BIGINT COLLATE utf8mb4_unicode_ci DEFAULT 0 COMMENT '模特信息表主键',
   `pic_url` VARCHAR(300) COLLATE utf8mb4_unicode_ci DEFAULT '' NOT NULL COMMENT '图片地址',
   `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
