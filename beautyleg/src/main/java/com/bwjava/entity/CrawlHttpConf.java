@@ -17,7 +17,7 @@ public class CrawlHttpConf {
 
     private static Map<String, String> DEFAULT_HEADERS;
 
-    static  {
+    static {
         DEFAULT_HEADERS = new HashMap<>();
         DEFAULT_HEADERS.put("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
         DEFAULT_HEADERS.put("connection", "Keep-Alive");
