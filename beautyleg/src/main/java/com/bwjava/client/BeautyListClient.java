@@ -1,5 +1,6 @@
 package com.bwjava.client;
 
+import com.bwjava.dto.BeautyListInfo;
 import com.bwjava.entity.CrawlMeta;
 import com.bwjava.entity.CrawlResult;
 import com.bwjava.service.SimpleCrawlJob;
@@ -29,20 +30,28 @@ public class BeautyListClient {
      */
     private Integer pageCount;
 
-    public List<String> getModelPicUrls() {
+    /**
+     * 获取模特的详情页入口url
+     * @return
+     */
+    public BeautyListInfo getModelPicUrls() {
         Set<List<String>> selectRule = new HashSet<>();
+        // 地址规则
         List<String> urlRule = Arrays.asList("div[class=main]", "div[class=boxs]", "a:has(img)");
         selectRule.add(urlRule);
+        // 封面图规则
+        List<String> thumbPicRule = Arrays.asList("div[class=main]", "div[class=boxs]", "a", "img");
+        selectRule.add(thumbPicRule);
 
         Set<List<String>> selectHrefs = new HashSet<>();
         selectHrefs.add(Arrays.asList("div[id=pages]", "a[class=a1]", ":contains(下一页)"));
 
         CrawlMeta crawlMeta = new CrawlMeta(url, selectRule);
-//        crawlMeta.setSelectorHrefs(selectHrefs); // 可选项
+        crawlMeta.setSelectorHrefs(selectHrefs); // 可选项
 
         SimpleCrawlJob job = new SimpleCrawlJob();
         job.setCrawlMeta(crawlMeta);
-        job.setDepth(0);
+        job.setDepth(this.pageCount);
 
         Future<?> submit = ExecutorServiceUtil.getInstance().submit(job);
         try {
@@ -52,11 +61,18 @@ public class BeautyListClient {
         }
 
         List<String> urls = new ArrayList<>();
+        List<String> thumbPics = new ArrayList<>();
         List<CrawlResult> crawlResults = job.getCrawlResults();
         for (CrawlResult crawlResult : crawlResults) {
-            List<String> strings = crawlResult.getResult().get(urlRule);
-            urls.addAll(strings);
+            List<String> urlTemp = crawlResult.getResult().get(urlRule);
+            urls.addAll(urlTemp);
+            List<String> thumbPicTemp = crawlResult.getResult().get(thumbPicRule);
+            thumbPics.addAll(thumbPicTemp);
         }
-        return urls;
+
+        BeautyListInfo beautyListInfo = new BeautyListInfo();
+        beautyListInfo.setUrl(urls);
+        beautyListInfo.setThumbPic(thumbPics);
+        return beautyListInfo;
     }
 }
