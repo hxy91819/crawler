@@ -15,6 +15,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author chenjing
@@ -48,6 +49,8 @@ public class SimpleCrawlJob extends AbstractJob {
      */
     private int depth = 0;
 
+    private CountDownLatch countDownLatch;
+
 
     /**
      * 执行抓取网页
@@ -56,9 +59,16 @@ public class SimpleCrawlJob extends AbstractJob {
      */
     @Override
     public void doFetchPage() throws Exception {
-        Preconditions.checkArgument(!this.crawlMeta.getSelectorRules().isEmpty());
-        doFetchNextPage(0, this.crawlMeta.getUrl());
-        this.crawlResult = this.crawlResults.get(0);
+        try {
+            Preconditions.checkArgument(!this.crawlMeta.getSelectorRules().isEmpty());
+            doFetchNextPage(0, this.crawlMeta.getUrl());
+            this.crawlResult = this.crawlResults.get(0);
+        } finally {
+            if (countDownLatch != null) {
+                System.out.println("current latch count:" + countDownLatch.getCount());
+                countDownLatch.countDown();
+            }
+        }
     }
 
     private void doFetchNextPage(int currentDepth, String url) throws Exception {
@@ -155,5 +165,17 @@ public class SimpleCrawlJob extends AbstractJob {
             select = select.select(iterator.next());
         }
         return select;
+    }
+
+    @Override
+    public void beforeRun() {
+        String name = Thread.currentThread().getName();
+        System.out.println("Thread:" + name + " start...");
+    }
+
+    @Override
+    public void afterRun() {
+        String name = Thread.currentThread().getName();
+        System.out.println("Thread:" + name + " stop...");
     }
 }

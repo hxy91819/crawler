@@ -1,7 +1,8 @@
 package com.bwjava.util;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+
+import java.util.concurrent.*;
 
 /**
  * 线程池单例
@@ -20,7 +21,11 @@ public class ExecutorServiceUtil {
         if (instance == null) {
             synchronized (ExecutorServiceUtil.class) {
                 if (instance == null) {
-                    return Executors.newFixedThreadPool(10);
+                    ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
+                            .setNameFormat("demo-pool-%d").build();
+                    return new ThreadPoolExecutor(5, 200,
+                            0L, TimeUnit.MILLISECONDS,
+                            new LinkedBlockingQueue<>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
                 }
             }
         }

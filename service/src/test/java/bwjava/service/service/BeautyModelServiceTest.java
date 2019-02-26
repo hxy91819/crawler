@@ -6,6 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author chenjing
@@ -14,17 +16,30 @@ import javax.annotation.Resource;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class BeautyModelServiceTest {
+    private static List<String> urls = new ArrayList<>();
+
+    static {
+        urls.add("https://www.meitulu.com/t/beautyleg/");
+        for (int i = 2; i <= 22; i++) {
+            urls.add("https://www.meitulu.com/t/beautyleg/" + i + ".html");
+        }
+    }
 
     @Resource
     private BeautyModelService beautyModelService;
 
     @Test
-    public void test(){
+    public void test() {
         System.out.println(beautyModelService.save());
     }
 
     @Test
-    public void testGetBasic(){
+    public void testGetBasic() {
         beautyModelService.crawlModalData("https://www.meitulu.com/item/15665.html");
+    }
+
+    @Test
+    public void testSaveAllModelEntrance() {
+        beautyModelService.fetchAndSaveBeautyList(urls, 22);
     }
 }

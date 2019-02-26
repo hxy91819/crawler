@@ -2,6 +2,8 @@ package bwjava.service.dao.write;
 
 import bwjava.service.entity.BeautyModel;
 
+import java.util.List;
+
 public interface BeautyModelWriterDao {
     int deleteByPrimaryKey(Long id);
 
@@ -12,4 +14,6 @@ public interface BeautyModelWriterDao {
     int updateByPrimaryKeySelective(BeautyModel record);
 
     int updateByPrimaryKey(BeautyModel record);
+
+    int insertBatch(List<BeautyModel> records);
 }
