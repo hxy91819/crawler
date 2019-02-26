@@ -38,10 +38,10 @@
                enableDeleteByPrimaryKey="false" enableInsert="false" enableUpdateByPrimaryKey="false"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false"/>
-        <table tableName="t_beauty_model_pic" domainObjectName="BeautyModelPic"
-               enableDeleteByPrimaryKey="false" enableInsert="false" enableUpdateByPrimaryKey="false"
-               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <!--<table tableName="t_beauty_model_pic" domainObjectName="BeautyModelPic"-->
+               <!--enableDeleteByPrimaryKey="false" enableInsert="false" enableUpdateByPrimaryKey="false"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false"/>-->
     </context>
     <context id="write" targetRuntime="MyBatis3">
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
@@ -76,9 +76,9 @@
                enableSelectByPrimaryKey="false" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>
-        <table tableName="t_beauty_model_pic" domainObjectName="BeautyModelPic"
-               enableSelectByPrimaryKey="false" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+        <!--<table tableName="t_beauty_model_pic" domainObjectName="BeautyModelPic"-->
+               <!--enableSelectByPrimaryKey="false" enableCountByExample="false"-->
+               <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false"/>-->
     </context>
 </generatorConfiguration>

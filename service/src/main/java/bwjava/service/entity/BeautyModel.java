@@ -25,6 +25,9 @@ public class BeautyModel implements Serializable {
     /** 入口地址 */
     private String entranceUrl;
 
+    /** 封面地址 */
+    private String thumbPic;
+
     /** 创建时间 */
     private Date createTime;
 
@@ -101,6 +104,16 @@ public class BeautyModel implements Serializable {
     /** 入口地址 */
     public void setEntranceUrl(String entranceUrl) {
         this.entranceUrl = entranceUrl == null ? null : entranceUrl.trim();
+    }
+
+    /** 封面地址 */
+    public String getThumbPic() {
+        return thumbPic;
+    }
+
+    /** 封面地址 */
+    public void setThumbPic(String thumbPic) {
+        this.thumbPic = thumbPic == null ? null : thumbPic.trim();
     }
 
     /** 创建时间 */

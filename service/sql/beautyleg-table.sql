@@ -7,6 +7,7 @@ CREATE TABLE crawler.`t_beauty_model` (
   `model_name` VARCHAR(50) COLLATE utf8mb4_unicode_ci DEFAULT '' NOT NULL COMMENT '模特名称',
   `pic_count` INT COLLATE utf8mb4_unicode_ci DEFAULT 0 NOT NULL COMMENT '图片数量',
   `entrance_url` VARCHAR(300) COLLATE utf8mb4_unicode_ci DEFAULT '' NOT NULL COMMENT '入口地址',
+  `thumb_pic` VARCHAR(300) COLLATE utf8mb4_unicode_ci DEFAULT '' NOT NULL COMMENT '封面地址',
   `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`)
