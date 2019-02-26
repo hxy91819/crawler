@@ -9,11 +9,13 @@
     <result column="model_name" jdbcType="VARCHAR" property="modelName" />
     <result column="pic_count" jdbcType="INTEGER" property="picCount" />
     <result column="entrance_url" jdbcType="VARCHAR" property="entranceUrl" />
+    <result column="thumb_pic" jdbcType="VARCHAR" property="thumbPic" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, org, title, release_date, model_name, pic_count, entrance_url, create_time, update_time
+    id, org, title, release_date, model_name, pic_count, entrance_url, thumb_pic, create_time, 
+    update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 

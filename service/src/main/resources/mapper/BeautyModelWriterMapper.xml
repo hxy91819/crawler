@@ -8,12 +8,12 @@
   <insert id="insert" parameterType="bwjava.service.entity.BeautyModel">
     insert into t_beauty_model (id, org, title, 
       release_date, model_name, pic_count, 
-      entrance_url, create_time, update_time
-      )
+      entrance_url, thumb_pic, create_time, 
+      update_time)
     values (#{id,jdbcType=BIGINT}, #{org,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
       #{releaseDate,jdbcType=VARCHAR}, #{modelName,jdbcType=VARCHAR}, #{picCount,jdbcType=INTEGER}, 
-      #{entranceUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+      #{entranceUrl,jdbcType=VARCHAR}, #{thumbPic,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="bwjava.service.entity.BeautyModel">
     insert into t_beauty_model
@@ -38,6 +38,9 @@
       </if>
       <if test="entranceUrl != null">
         entrance_url,
+      </if>
+      <if test="thumbPic != null">
+        thumb_pic,
       </if>
       <if test="createTime != null">
         create_time,
@@ -68,6 +71,9 @@
       <if test="entranceUrl != null">
         #{entranceUrl,jdbcType=VARCHAR},
       </if>
+      <if test="thumbPic != null">
+        #{thumbPic,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -97,6 +103,9 @@
       <if test="entranceUrl != null">
         entrance_url = #{entranceUrl,jdbcType=VARCHAR},
       </if>
+      <if test="thumbPic != null">
+        thumb_pic = #{thumbPic,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -114,6 +123,7 @@
       model_name = #{modelName,jdbcType=VARCHAR},
       pic_count = #{picCount,jdbcType=INTEGER},
       entrance_url = #{entranceUrl,jdbcType=VARCHAR},
+      thumb_pic = #{thumbPic,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
