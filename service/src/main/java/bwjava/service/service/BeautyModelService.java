@@ -3,6 +3,8 @@ package bwjava.service.service;
 import bwjava.service.dao.write.BeautyModelWriterDao;
 import bwjava.service.entity.BeautyModel;
 import bwjava.util.SnowFlake;
+import com.bwjava.client.BeautyListClient;
+import com.bwjava.dto.BeautyListInfo;
 import com.bwjava.entity.CrawlMeta;
 import com.bwjava.entity.CrawlResult;
 import com.bwjava.service.SimpleCrawlJob;
@@ -32,7 +34,6 @@ public class BeautyModelService {
     private ExecutorService executorService;
 
     public int save() {
-
         BeautyModel beautyModel = new BeautyModel();
         beautyModel.setId(snowFlake.nextId());
         beautyModel.setModelName("test");
@@ -73,6 +74,32 @@ public class BeautyModelService {
         List<String> picCount = result.getResult().get(picCountRule);
 
         return null;
+    }
+
+    /**
+     * 爬取并保存模特列表
+     *
+     * @param entranceUrls
+     * @param pageCount
+     */
+    public void fetchAndSaveBeautyList(List<String> entranceUrls, Integer pageCount) {
+        BeautyListClient client = new BeautyListClient(entranceUrls, pageCount);
+        BeautyListInfo modelPicUrls = client.getModelPicUrls();
+        List<String> urls = modelPicUrls.getUrl();
+        List<String> thumbPics = modelPicUrls.getThumbPic();
+        Preconditions.checkState(!urls.isEmpty());
+        Preconditions.checkState(urls.size() == thumbPics.size());
+        List<BeautyModel> beautyModels = new ArrayList<>();
+        for (int i = 0; i < urls.size(); i++) {
+            long id = snowFlake.nextId();
+            BeautyModel beautyModel = new BeautyModel();
+            beautyModel.setId(id);
+            beautyModel.setEntranceUrl(urls.get(i));
+            beautyModel.setThumbPic(thumbPics.get(i));
+            beautyModels.add(beautyModel);
+        }
+        int count = beautyModelWriterDao.insertBatch(beautyModels);
+        System.out.println("batch count:" + count);
     }
 
 //    private List<String> crawlPics(String url) {

@@ -8,8 +8,7 @@ import com.bwjava.util.ExecutorServiceUtil;
 import lombok.AllArgsConstructor;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * 模特列表客户端
@@ -21,9 +20,9 @@ import java.util.concurrent.Future;
 public class BeautyListClient {
 
     /**
-     * 入口url
+     * 入口url（复数）
      */
-    private String url;
+    private List<String> entransUrls;
 
     /**
      * 抓取的页面总数
@@ -32,6 +31,7 @@ public class BeautyListClient {
 
     /**
      * 获取模特的详情页入口url
+     *
      * @return
      */
     public BeautyListInfo getModelPicUrls() {
@@ -43,33 +43,41 @@ public class BeautyListClient {
         List<String> thumbPicRule = Arrays.asList("div[class=main]", "div[class=boxs]", "a", "img");
         selectRule.add(thumbPicRule);
 
-        Set<List<String>> selectHrefs = new HashSet<>();
-        selectHrefs.add(Arrays.asList("div[id=pages]", "a[class=a1]", ":contains(下一页)"));
+//        Set<List<String>> selectHrefs = new HashSet<>();
+//        selectHrefs.add(Arrays.asList("div[id=pages]", "a[class=a1]", ":contains(下一页)"));
 
-        CrawlMeta crawlMeta = new CrawlMeta(url, selectRule);
-        crawlMeta.setSelectorHrefs(selectHrefs); // 可选项
+        CountDownLatch countDownLatch = new CountDownLatch(entransUrls.size());
+        List<SimpleCrawlJob> jobs = new ArrayList<>();
+        for (String url : entransUrls) {
+            CrawlMeta crawlMeta = new CrawlMeta(url, selectRule);
+//            crawlMeta.setSelectorHrefs(selectHrefs); // 可选项
 
-        SimpleCrawlJob job = new SimpleCrawlJob();
-        job.setCrawlMeta(crawlMeta);
-        job.setDepth(this.pageCount);
+            SimpleCrawlJob job = new SimpleCrawlJob();
+            job.setCrawlMeta(crawlMeta);
+            job.setDepth(this.pageCount);
+            job.setCountDownLatch(countDownLatch);
+            jobs.add(job);
 
-        Future<?> submit = ExecutorServiceUtil.getInstance().submit(job);
+            ExecutorServiceUtil.getInstance().submit(job);
+        }
+
         try {
-            submit.get();
-        } catch (InterruptedException | ExecutionException e) {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         List<String> urls = new ArrayList<>();
         List<String> thumbPics = new ArrayList<>();
-        List<CrawlResult> crawlResults = job.getCrawlResults();
-        for (CrawlResult crawlResult : crawlResults) {
-            List<String> urlTemp = crawlResult.getResult().get(urlRule);
-            urls.addAll(urlTemp);
-            List<String> thumbPicTemp = crawlResult.getResult().get(thumbPicRule);
-            thumbPics.addAll(thumbPicTemp);
+        for (SimpleCrawlJob job : jobs) {
+            List<CrawlResult> crawlResults = job.getCrawlResults();
+            for (CrawlResult crawlResult : crawlResults) {
+                List<String> urlTemp = crawlResult.getResult().get(urlRule);
+                urls.addAll(urlTemp);
+                List<String> thumbPicTemp = crawlResult.getResult().get(thumbPicRule);
+                thumbPics.addAll(thumbPicTemp);
+            }
         }
-
         BeautyListInfo beautyListInfo = new BeautyListInfo();
         beautyListInfo.setUrl(urls);
         beautyListInfo.setThumbPic(thumbPics);
