@@ -1,5 +1,6 @@
 package bwjava.service.service;
 
+import bwjava.service.dao.read.BeautyModelReaderDao;
 import bwjava.service.dao.write.BeautyModelWriterDao;
 import bwjava.service.entity.BeautyModel;
 import bwjava.util.SnowFlake;
@@ -9,6 +10,7 @@ import com.bwjava.entity.CrawlMeta;
 import com.bwjava.entity.CrawlResult;
 import com.bwjava.service.SimpleCrawlJob;
 import com.google.common.base.Preconditions;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,11 +23,14 @@ import java.util.concurrent.Future;
  * @author chenjing
  * @date 2019-02-24 11:57
  */
+@Log4j2
 @Service
 public class BeautyModelService {
-
     @Resource
     private BeautyModelWriterDao beautyModelWriterDao;
+
+    @Resource
+    private BeautyModelReaderDao beautyModelReaderDao;
 
     @Resource
     private SnowFlake snowFlake;
@@ -70,9 +75,7 @@ public class BeautyModelService {
         List<String> strings = result.getResult().get(titleRule);
         Preconditions.checkState(!strings.isEmpty());
         String title = strings.get(0);
-
         List<String> picCount = result.getResult().get(picCountRule);
-
         return null;
     }
 
@@ -98,8 +101,16 @@ public class BeautyModelService {
             beautyModel.setThumbPic(thumbPics.get(i));
             beautyModels.add(beautyModel);
         }
+        // 从数据库查询当前已经保存的，防止多次跑的时候进入重复的数据
+        log.info("current crawl pics :{}", beautyModels.size());
+        List<BeautyModel> beautyModelDB = beautyModelReaderDao.selectEntranceurl();
+        log.info("db pics:{}", beautyModelDB.size());
+        beautyModels.removeAll(beautyModelDB);
+        if (beautyModels.isEmpty()) {
+            return;
+        }
         int count = beautyModelWriterDao.insertBatch(beautyModels);
-        System.out.println("batch count:" + count);
+        log.info("insert batch count:{}", count);
     }
 
 //    private List<String> crawlPics(String url) {

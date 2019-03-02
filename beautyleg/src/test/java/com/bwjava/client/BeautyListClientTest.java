@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class BeautyListClientTest {
     private static List<String> urls = new ArrayList<>();
+
     static {
         urls.add("https://www.meitulu.com/t/beautyleg/");
         for (int i = 2; i <= 22; i++) {
@@ -22,7 +23,7 @@ public class BeautyListClientTest {
     private static BeautyListClient beautyListClient = new BeautyListClient(urls, 0);
 
     @Test
-    public void testGetList(){
+    public void testGetList() {
         BeautyListInfo modelPicUrls = beautyListClient.getModelPicUrls();
         System.out.println("end");
     }

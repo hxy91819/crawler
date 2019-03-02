@@ -2,6 +2,7 @@ package bwjava.service.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 public class BeautyModel implements Serializable {
     /** 主键编号 */
@@ -35,6 +36,24 @@ public class BeautyModel implements Serializable {
     private Date updateTime;
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 这里认为入口地址相等的对象为同一个对象
+     * @param o
+     * @return
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BeautyModel that = (BeautyModel) o;
+        return Objects.equals(entranceUrl, that.entranceUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(entranceUrl);
+    }
 
     /** 主键编号 */
     public Long getId() {
