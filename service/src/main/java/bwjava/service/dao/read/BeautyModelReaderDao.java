@@ -8,4 +8,6 @@ public interface BeautyModelReaderDao {
     BeautyModel selectByPrimaryKey(Long id);
 
     List<BeautyModel> selectEntranceurl();
+
+    List<BeautyModel> selectEntranceurlThumbpic();
 }

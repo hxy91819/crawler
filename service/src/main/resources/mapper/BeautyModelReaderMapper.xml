@@ -29,4 +29,10 @@
         entrance_url
         from t_beauty_model
     </select>
+
+    <select id="selectEntranceurlThumbpic" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        entrance_url, thumb_Pic
+        from t_beauty_model
+    </select>
 </mapper>

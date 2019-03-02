@@ -1,5 +1,6 @@
 package bwjava.service.service;
 
+import bwjava.service.entity.BeautyModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,5 +42,11 @@ public class BeautyModelServiceTest {
     @Test
     public void testSaveAllModelEntrance() {
         beautyModelService.fetchAndSaveBeautyList(urls, 22);
+    }
+
+    @Test
+    public void testListAll() {
+        List<BeautyModel> beautyModels = beautyModelService.listAll(1, 2);
+        System.out.println(beautyModels);
     }
 }
