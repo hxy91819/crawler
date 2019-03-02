@@ -9,6 +9,7 @@ import com.bwjava.dto.BeautyListInfo;
 import com.bwjava.entity.CrawlMeta;
 import com.bwjava.entity.CrawlResult;
 import com.bwjava.service.SimpleCrawlJob;
+import com.github.pagehelper.PageHelper;
 import com.google.common.base.Preconditions;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -113,9 +114,10 @@ public class BeautyModelService {
         log.info("insert batch count:{}", count);
     }
 
-//    private List<String> crawlPics(String url) {
-//
-//    }
+    public List<BeautyModel> listAll(int pageNum, int pageSize){
+        PageHelper.startPage(pageNum, pageSize);
+        return beautyModelReaderDao.selectEntranceurlThumbpic();
+    }
 }
 
 class ModalData {
