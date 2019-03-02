@@ -96,14 +96,14 @@ const Request = async (params = {}, url) => {
 
 /** 为异步方法提供的参数校验逻辑 */
 const VerifyRes = res => {
-    if (res.code === 999) {
-        // 跳转登录
-        // warning();
-        return false;
-    } else if (res.code !== 0) {
-        // openNotification(res.msg);
-        return false;
-    }
+    // if (res.code === 999) {
+    //     // 跳转登录
+    //     // warning();
+    //     return false;
+    // } else if (res.code !== 0) {
+    //     // openNotification(res.msg);
+    //     return false;
+    // }
     return true;
 };
 
