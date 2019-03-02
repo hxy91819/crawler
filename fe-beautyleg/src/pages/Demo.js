@@ -1,6 +1,8 @@
 /* eslint no-dupe-keys: 0 */
-import { ListView } from 'antd-mobile';
-import React, {Component} from 'react';
+import {ListView} from 'antd-mobile';
+import React from 'react';
+import {listbypage} from "../utils/api"
+import {debug} from "../utils/constant"
 
 const data = [
     {
@@ -45,6 +47,15 @@ class Demo extends React.Component {
     }
 
     componentDidMount() {
+        let queryString = `pageNum=1&pageSize=10`
+        listbypage({
+            query: queryString,
+            method: "get",
+            async: true,
+        }).then(res => {
+                debug('res:', res)
+            }
+        );
         // you can scroll to the specified position
         // setTimeout(() => this.lv.scrollTo(0, 120), 800);
 
@@ -74,9 +85,9 @@ class Demo extends React.Component {
             return;
         }
         console.log('reach end', event);
-        this.setState({ isLoading: true });
+        this.setState({isLoading: true});
         setTimeout(() => {
-            this.rData = { ...this.rData, ...genData(++pageIndex) };
+            this.rData = {...this.rData, ...genData(++pageIndex)};
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(this.rData),
                 isLoading: false,
@@ -103,7 +114,7 @@ class Demo extends React.Component {
             }
             const obj = data[index--];
             return (
-                <div key={rowID} style={{ padding: '0 15px' }}>
+                <div key={rowID} style={{padding: '0 15px'}}>
                     <div
                         style={{
                             lineHeight: '50px',
@@ -112,11 +123,11 @@ class Demo extends React.Component {
                             borderBottom: '1px solid #F6F6F6',
                         }}
                     >{obj.title}</div>
-                    <div style={{ display: '-webkit-box', display: 'flex', padding: '15px 0' }}>
-                        <img style={{ height: '64px', marginRight: '15px' }} src={obj.img} alt="" />
-                        <div style={{ lineHeight: 1 }}>
-                            <div style={{ marginBottom: '8px', fontWeight: 'bold' }}>{obj.des}</div>
-                            <div><span style={{ fontSize: '30px', color: '#FF6E27' }}>{rowID}</span>¥</div>
+                    <div style={{display: '-webkit-box', display: 'flex', padding: '15px 0'}}>
+                        <img style={{height: '64px', marginRight: '15px'}} src={obj.img} alt=""/>
+                        <div style={{lineHeight: 1}}>
+                            <div style={{marginBottom: '8px', fontWeight: 'bold'}}>{obj.des}</div>
+                            <div><span style={{fontSize: '30px', color: '#FF6E27'}}>{rowID}</span>¥</div>
                         </div>
                     </div>
                 </div>
@@ -127,7 +138,7 @@ class Demo extends React.Component {
                 ref={el => this.lv = el}
                 dataSource={this.state.dataSource}
                 renderHeader={() => <span>header</span>}
-                renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
+                renderFooter={() => (<div style={{padding: 30, textAlign: 'center'}}>
                     {this.state.isLoading ? 'Loading...' : 'Loaded'}
                 </div>)}
                 renderRow={row}
@@ -135,7 +146,9 @@ class Demo extends React.Component {
                 className="am-list"
                 pageSize={4}
                 useBodyScroll
-                onScroll={() => { console.log('scroll'); }}
+                onScroll={() => {
+                    console.log('scroll');
+                }}
                 scrollRenderAheadDistance={500}
                 onEndReached={this.onEndReached}
                 onEndReachedThreshold={10}
@@ -143,4 +156,5 @@ class Demo extends React.Component {
         );
     }
 }
+
 export default Demo;

@@ -3,7 +3,6 @@ package bwjava.service.controller;
 import bwjava.service.entity.BeautyModel;
 import bwjava.service.service.BeautyModelService;
 import com.alibaba.fastjson.JSON;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +20,7 @@ public class BeautyLegController {
     @Resource
     private BeautyModelService beautyModelService;
 
-    @GetMapping("/listbypage")
+    @RequestMapping("/listbypage")
     public String listByPage(@RequestParam int pageNum, @RequestParam int pageSize) {
         List<BeautyModel> beautyModels = beautyModelService.listAll(pageNum, pageSize);
         return JSON.toJSONString(beautyModels);
