@@ -7,6 +7,7 @@ import com.bwjava.util.HttpUtils;
 import com.google.common.base.Preconditions;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
@@ -21,6 +22,7 @@ import java.util.concurrent.CountDownLatch;
  * @author chenjing
  * @date 2019-02-21 15:35
  */
+@Log4j2
 @Getter
 @Setter
 public class SimpleCrawlJob extends AbstractJob {
@@ -65,7 +67,7 @@ public class SimpleCrawlJob extends AbstractJob {
             this.crawlResult = this.crawlResults.get(0);
         } finally {
             if (countDownLatch != null) {
-                System.out.println("current latch count:" + countDownLatch.getCount());
+                log.info("current latch count:" + countDownLatch.getCount());
                 countDownLatch.countDown();
             }
         }
@@ -170,12 +172,12 @@ public class SimpleCrawlJob extends AbstractJob {
     @Override
     public void beforeRun() {
         String name = Thread.currentThread().getName();
-        System.out.println("Thread:" + name + " start...");
+        log.info("Thread:" + name + " start...");
     }
 
     @Override
     public void afterRun() {
         String name = Thread.currentThread().getName();
-        System.out.println("Thread:" + name + " stop...");
+        log.info("Thread:" + name + " stop...");
     }
 }

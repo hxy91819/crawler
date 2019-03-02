@@ -15,7 +15,6 @@ public class SnowFlakeTest {
         for (int i = 0; i < 1000000; i++) {
             System.out.println(snowFlake.nextId());
         }
-
         System.out.println(System.currentTimeMillis() - start);
     }
 

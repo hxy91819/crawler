@@ -2,6 +2,7 @@ package com.bwjava.service;
 
 import com.bwjava.entity.CrawlMeta;
 import com.bwjava.entity.CrawlResult;
+import lombok.extern.log4j.Log4j2;
 import org.junit.Test;
 
 import java.util.*;
@@ -13,7 +14,13 @@ import java.util.stream.Collectors;
  * @author chenjing
  * @date 2019-02-21 15:43
  */
+@Log4j2
 public class SimpleCrawlJobTest {
+    @Test
+    public void testlog() {
+        log.info("hahaha:{}", "dick");
+    }
+
     @Test
     public void testCrawl() throws InterruptedException {
         String url = "https://www.meitulu.com/item/15665.html";
