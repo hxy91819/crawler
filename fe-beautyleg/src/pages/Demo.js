@@ -47,12 +47,14 @@ class Demo extends React.Component {
     }
 
     componentDidMount() {
+        console.log('xxx')
         let queryString = `pageNum=1&pageSize=10`
         listbypage({
             query: queryString,
             method: "get",
             async: true,
         }).then(res => {
+                console.log("res:", res)
                 debug('res:', res)
             }
         );
