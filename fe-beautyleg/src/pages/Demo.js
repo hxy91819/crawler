@@ -1,26 +1,12 @@
 /* eslint no-dupe-keys: 0 */
 import {ListView} from 'antd-mobile';
 import React from 'react';
-import {listbypage} from "../utils/api"
 import {debug} from "../utils/constant"
+import {listbypage} from "../utils/api"
 
-const data = [
-    {
-        img: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-        title: 'Meet hotel',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-    {
-        img: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
-        title: 'McDonald\'s invites you',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-    {
-        img: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
-        title: 'Eat the week',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-];
+// 数据源
+let data = [];
+
 const NUM_ROWS = 20;
 let pageIndex = 0;
 
@@ -30,6 +16,7 @@ function genData(pIndex = 0) {
         const ii = (pIndex * NUM_ROWS) + i;
         dataBlob[`${ii}`] = `row - ${ii}`;
     }
+    debug('datablob:', dataBlob)
     return dataBlob;
 }
 
@@ -46,55 +33,51 @@ class Demo extends React.Component {
         };
     }
 
+    pageNum = 1;// 第几个分页
+
     componentDidMount() {
-        console.log('xxx')
-        let queryString = `pageNum=1&pageSize=10`
+        let queryString = `pageNum=${this.pageNum}&pageSize=${NUM_ROWS}`
         listbypage({
             query: queryString,
             method: "get",
             async: true,
         }).then(res => {
-                console.log("res:", res)
                 debug('res:', res)
+                data = data.concat(res);
+                debug('data after concat:', data)
+                this.rData = genData();
+                debug('rData：', this.rData)
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(this.rData),
+                    isLoading: false,
+                });
             }
         );
-        // you can scroll to the specified position
-        // setTimeout(() => this.lv.scrollTo(0, 120), 800);
-
-        // simulate initial Ajax
-        setTimeout(() => {
-            this.rData = genData();
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.rData),
-                isLoading: false,
-            });
-        }, 600);
     }
 
-    // If you use redux, the data maybe at props, you need use `componentWillReceiveProps`
-    // componentWillReceiveProps(nextProps) {
-    //   if (nextProps.dataSource !== this.props.dataSource) {
-    //     this.setState({
-    //       dataSource: this.state.dataSource.cloneWithRows(nextProps.dataSource),
-    //     });
-    //   }
-    // }
-
     onEndReached = (event) => {
-        // load new data
-        // hasMore: from backend data, indicates whether it is the last page, here is false
-        if (this.state.isLoading && !this.state.hasMore) {
-            return;
-        }
-        console.log('reach end', event);
-        this.setState({isLoading: true});
-        setTimeout(() => {
-            this.rData = {...this.rData, ...genData(++pageIndex)};
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.rData),
-                isLoading: false,
-            });
-        }, 1000);
+        let queryString = `pageNum=${++this.pageNum}&pageSize=${NUM_ROWS}`
+        listbypage({
+            query: queryString,
+            method: "get",
+            async: true,
+        }).then(res => {
+                // load new data
+                // hasMore: from backend data, indicates whether it is the last page, here is false
+                if (this.state.isLoading && res.length <= 0) {
+                    return;
+                }
+                data = data.concat(res);
+                debug('data after concat:', data)
+                console.log('reach end', event);
+                this.setState({isLoading: true});
+                this.rData = {...this.rData, ...genData(++pageIndex)};
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(this.rData),
+                    isLoading: false,
+                });
+            }
+        );
     }
 
     render() {
@@ -111,26 +94,30 @@ class Demo extends React.Component {
         );
         let index = data.length - 1;
         const row = (rowData, sectionID, rowID) => {
-            if (index < 0) {
-                index = data.length - 1;
+            debug('rowId:', rowID)
+            if (rowID > data.length - 1) {
+                rowID = data.length - 1;
             }
-            const obj = data[index--];
+            debug('data:', data)
+            const obj = data[rowID];
             return (
                 <div key={rowID} style={{padding: '0 15px'}}>
-                    <div
-                        style={{
-                            lineHeight: '50px',
-                            color: '#888',
-                            fontSize: 18,
-                            borderBottom: '1px solid #F6F6F6',
-                        }}
-                    >{obj.title}</div>
+                    {/*<div*/}
+                        {/*style={{*/}
+                            {/*lineHeight: '50px',*/}
+                            {/*color: '#888',*/}
+                            {/*fontSize: 18,*/}
+                            {/*borderBottom: '1px solid #F6F6F6',*/}
+                        {/*}}*/}
+                    {/*>beautys*/}
+                    {/*</div>*/}
                     <div style={{display: '-webkit-box', display: 'flex', padding: '15px 0'}}>
-                        <img style={{height: '64px', marginRight: '15px'}} src={obj.img} alt=""/>
-                        <div style={{lineHeight: 1}}>
-                            <div style={{marginBottom: '8px', fontWeight: 'bold'}}>{obj.des}</div>
-                            <div><span style={{fontSize: '30px', color: '#FF6E27'}}>{rowID}</span>¥</div>
-                        </div>
+                        <img style={{height: '230px', marginRight: '15px'}} src={obj.thumbPic}
+                             referrerPolicy="no-referrer" alt=""/>
+                        {/*<div style={{lineHeight: 1}}>*/}
+                        {/*<div style={{marginBottom: '8px', fontWeight: 'bold'}}>{obj.des}</div>*/}
+                        {/*<div><span style={{fontSize: '30px', color: '#FF6E27'}}>{rowID}</span>¥</div>*/}
+                        {/*</div>*/}
                     </div>
                 </div>
             );

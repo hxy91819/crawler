@@ -37,10 +37,10 @@ public class BeautyListClient {
     public BeautyListInfo getModelPicUrls() {
         Set<List<String>> selectRule = new HashSet<>();
         // 地址规则
-        List<String> urlRule = Arrays.asList("div[class=main]", "div[class=boxs]", "a:has(img)");
+        List<String> urlRule = Arrays.asList("div[class=hezi]", "a:has(img)");
         selectRule.add(urlRule);
         // 封面图规则
-        List<String> thumbPicRule = Arrays.asList("div[class=main]", "div[class=boxs]", "a", "img");
+        List<String> thumbPicRule = Arrays.asList("div[class=hezi]", "a", "img");
         selectRule.add(thumbPicRule);
 
 //        Set<List<String>> selectHrefs = new HashSet<>();

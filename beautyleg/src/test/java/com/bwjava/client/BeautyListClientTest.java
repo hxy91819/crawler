@@ -14,9 +14,9 @@ public class BeautyListClientTest {
     private static List<String> urls = new ArrayList<>();
 
     static {
-        urls.add("https://www.meitulu.com/t/beautyleg/");
-        for (int i = 2; i <= 22; i++) {
-            urls.add("https://www.meitulu.com/t/beautyleg/" + i + ".html");
+        urls.add("https://www.meituri.com/x/57/");
+        for (int i = 1; i <= 37; i++) {
+            urls.add("https://www.meituri.com/x/57/index_" + i + ".html");
         }
     }
 
