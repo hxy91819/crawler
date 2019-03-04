@@ -95,6 +95,7 @@ public class SimpleCrawlJob extends AbstractJob {
         this.crawlResults.add(result);
 
         // 超过最大深度， 不继续爬
+        log.info("currentDepth:{}, depth:{}", currentDepth, depth);
         if (currentDepth >= depth) {
             return;
         }

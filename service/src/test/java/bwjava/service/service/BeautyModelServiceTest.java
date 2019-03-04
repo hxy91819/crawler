@@ -49,4 +49,9 @@ public class BeautyModelServiceTest {
         List<BeautyModel> beautyModels = beautyModelService.listAll(1, 2);
         System.out.println(beautyModels);
     }
+
+    @Test
+    public void testFetchAndSavePic() {
+        beautyModelService.fetchAndSaveBeautyPics();
+    }
 }

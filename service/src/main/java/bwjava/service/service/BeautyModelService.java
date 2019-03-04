@@ -1,17 +1,22 @@
 package bwjava.service.service;
 
 import bwjava.service.dao.read.BeautyModelReaderDao;
+import bwjava.service.dao.write.BeautyModelPicWriterDao;
 import bwjava.service.dao.write.BeautyModelWriterDao;
 import bwjava.service.entity.BeautyModel;
+import bwjava.service.entity.BeautyModelPic;
 import bwjava.util.SnowFlake;
 import com.bwjava.client.BeautyListClient;
+import com.bwjava.client.BeautyPicClient;
 import com.bwjava.dto.BeautyListInfo;
+import com.bwjava.dto.ModelInfo;
 import com.bwjava.entity.CrawlMeta;
 import com.bwjava.entity.CrawlResult;
 import com.bwjava.service.SimpleCrawlJob;
 import com.github.pagehelper.PageHelper;
 import com.google.common.base.Preconditions;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +24,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 /**
  * @author chenjing
@@ -114,9 +120,51 @@ public class BeautyModelService {
         log.info("insert batch count:{}", count);
     }
 
-    public List<BeautyModel> listAll(int pageNum, int pageSize){
+    public List<BeautyModel> listAll(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        return beautyModelReaderDao.selectEntranceurlThumbpic();
+        List<BeautyModel> beautyModels = beautyModelReaderDao.selectEntranceurlThumbpic();
+        List<BeautyModel> beautyModels1 = beautyModelReaderDao.selectEntranceurlThumbpic();
+        return beautyModels;
+    }
+
+    @Resource
+    private BeautyModelPicWriterDao beautyModelPicWriterDao;
+
+    /**
+     * 根据数据库保存的入口地址，跑批所有模特的图片
+     */
+    public void fetchAndSaveBeautyPics() {
+        PageHelper.startPage(1, 20);
+        List<BeautyModel> beautyModels = beautyModelReaderDao.selectIdEntranceurl();
+        List<ModelInfo> modelInfos = beautyModels.stream().map(
+                x -> {
+                    ModelInfo modelInfo = new ModelInfo();
+                    modelInfo.setId(x.getId());
+                    modelInfo.setEntranceUrl(x.getEntranceUrl());
+                    return modelInfo;
+                }
+        ).collect(Collectors.toList());
+        BeautyPicClient client = new BeautyPicClient(5, modelInfos);
+        List<ModelInfo> modelInfoWithPics = client.doFetchAllUrls();
+        for (ModelInfo modelInfoWithPic : modelInfoWithPics) {
+            // 更新基本信息
+            BeautyModel beautyModel = new BeautyModel();
+            BeanUtils.copyProperties(modelInfoWithPic, beautyModel);
+            beautyModelWriterDao.updateByPrimaryKeySelective(beautyModel);
+            // 删除所有原图
+            beautyModelPicWriterDao.deleteByModelId(modelInfoWithPic.getId());
+            // 批量插入新图
+            List<BeautyModelPic> beautyModelPics = modelInfoWithPic.getPicUrls().stream().map(x -> {
+                long l = snowFlake.nextId();
+
+                BeautyModelPic beautyModelPic = new BeautyModelPic();
+                beautyModelPic.setId(l);
+                beautyModelPic.setModelId(modelInfoWithPic.getId());
+                beautyModelPic.setPicUrl(x);
+                return beautyModelPic;
+            }).collect(Collectors.toList());
+            beautyModelPicWriterDao.insertBatch(beautyModelPics);
+        }
     }
 }
 

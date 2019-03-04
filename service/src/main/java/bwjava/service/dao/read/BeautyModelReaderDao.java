@@ -10,4 +10,6 @@ public interface BeautyModelReaderDao {
     List<BeautyModel> selectEntranceurl();
 
     List<BeautyModel> selectEntranceurlThumbpic();
+
+    List<BeautyModel> selectIdEntranceurl();
 }
