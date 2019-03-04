@@ -16,16 +16,16 @@ public class ExecutorServiceUtil {
 
     private volatile static ExecutorService instance;
 
-    @SuppressWarnings("AlibabaThreadPoolCreation")
     public static ExecutorService getInstance() {
         if (instance == null) {
             synchronized (ExecutorServiceUtil.class) {
                 if (instance == null) {
                     ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
                             .setNameFormat("demo-pool-%d").build();
-                    return new ThreadPoolExecutor(5, 200,
+                    instance = new ThreadPoolExecutor(5, 200,
                             0L, TimeUnit.MILLISECONDS,
                             new LinkedBlockingQueue<>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
+                    return instance;
                 }
             }
         }

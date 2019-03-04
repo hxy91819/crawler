@@ -22,3 +22,5 @@ CREATE TABLE crawler.`t_beauty_model_pic` (
   `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='模特信息表';
+
+ALTER TABLE crawler.t_beauty_model_pic ADD INDEX idx_model_id(model_id);
