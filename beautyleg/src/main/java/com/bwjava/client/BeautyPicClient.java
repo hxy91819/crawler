@@ -8,7 +8,9 @@ import com.bwjava.util.ExecutorServiceUtil;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -32,47 +34,33 @@ public class BeautyPicClient {
         this.modelInfos = modelInfos;
     }
 
+    private static final List<String> TITLE_RULE = Collections.singletonList("h1");
+    private static final List<String> PIC_COUNT_RULE = Arrays.asList("div[class=tuji]", "p:contains(图片数量)");
+
     /**
      * 获取模特基本信息
      *
      * @return 模特基本信息
      */
-    private ModelInfo getModelInfo(String entranceUrl) {
+    private SimpleCrawlJob getModelInfo(String entranceUrl) {
         // 从第一页抓取标题和基本信息
         Set<List<String>> selectRule = new HashSet<>();
-        List<String> titleRule = Collections.singletonList("h1");
-        selectRule.add(titleRule);
-        List<String> picCountRule = Arrays.asList("div[class=tuji]", "p:contains(图片数量)");
-        selectRule.add(picCountRule);
+        selectRule.add(TITLE_RULE);
+        selectRule.add(PIC_COUNT_RULE);
+        selectRule.add(IMG_RULE);
 
         CrawlMeta crawlMeta = new CrawlMeta(entranceUrl, selectRule);
 
         SimpleCrawlJob job = new SimpleCrawlJob();
         job.setCrawlMeta(crawlMeta);
         job.setDepth(0);
-
-        Future<?> submit = ExecutorServiceUtil.getInstance().submit(job);
-        try {
-            submit.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        ModelInfo modelInfo = new ModelInfo();
-        Map<List<String>, List<String>> result = job.getCrawlResults().get(0).getResult();
-        List<String> title = result.get(titleRule);
-        modelInfo.setTitle(title.get(0));
-        List<String> picCount = result.get(picCountRule);
-        for (String s : picCount) {
-            if (s.contains("图片数量")) {
-                if (s.length() > 8) {
-                    modelInfo.setPicCount(Integer.valueOf(s.substring(6, s.length() - 1)));
-                }
-                break;
-            }
-        }
-        return modelInfo;
+        return job;
     }
+
+    /**
+     * 图片选择器规则
+     */
+    private static final List<String> IMG_RULE = Arrays.asList("div[class=content]", "img[class=tupian_img]");
 
     /**
      * 构建爬取模特每张照片的Job
@@ -83,18 +71,17 @@ public class BeautyPicClient {
      */
     public SimpleCrawlJob buildGetPicUrlsJob(String entranceUrl, Integer picCount) {
         Set<List<String>> selectRule = new HashSet<>();
-        List<String> imgRule = Arrays.asList("div[class=content]", "img[class=tupian_img]");
-        selectRule.add(imgRule);
+        selectRule.add(IMG_RULE);
 
-        Set<List<String>> selectHrefs = new HashSet<>();
-        selectHrefs.add(Arrays.asList("div[id=pages]", "a[class=a1]", ":contains(下一页)"));
+//        Set<List<String>> selectHrefs = new HashSet<>();
+//        selectHrefs.add(Arrays.asList("div[id=pages]", "a[class=a1]", ":contains(下一页)"));
 
         CrawlMeta crawlMeta = new CrawlMeta(entranceUrl, selectRule);
-        crawlMeta.setSelectorHrefs(selectHrefs); // 可选项
+//        crawlMeta.setSelectorHrefs(selectHrefs); // 可选项
 
         SimpleCrawlJob job = new SimpleCrawlJob();
         job.setCrawlMeta(crawlMeta);
-        job.setDepth(picCount / picCountPerPage);
+        job.setDepth(0);
         return job;
     }
 
@@ -124,49 +111,87 @@ public class BeautyPicClient {
 
     private ExecutorService service = ExecutorServiceUtil.getInstance();
 
+    /**
+     * 爬取url所有模特的图片信息
+     *
+     * @return
+     */
     public List<ModelInfo> doFetchAllUrls() {
         if (modelInfos.isEmpty()) {
             return Collections.emptyList();
         }
         CountDownLatch countDownLatch = new CountDownLatch(modelInfos.size());
-        ThreadPoolExecutor tpe = ((ThreadPoolExecutor) service);
 
+        Map<String, ModelInfo> modelInfoMap = new HashMap<>();
         List<SimpleCrawlJob> jobs = new ArrayList<>();
-        Map<String, ModelInfo> modelInfoMap = new HashMap<>(modelInfos.size());
         for (ModelInfo modelInfo : modelInfos) {
             String entranceUrl = modelInfo.getEntranceUrl();
-            modelInfoMap.put(entranceUrl, modelInfo); // 保存入口url和模特信息对应关系，方便后续进行匹配
-
-            ModelInfo modelInfoCrawled = getModelInfo(entranceUrl);
-            Integer picCount = modelInfoCrawled.getPicCount();
-            modelInfo.setPicCount(picCount);
-            modelInfo.setTitle(modelInfoCrawled.getTitle());
-
-            SimpleCrawlJob simpleCrawlJob = buildGetPicUrlsJob(entranceUrl, picCount);
-            simpleCrawlJob.setCountDownLatch(countDownLatch); // 设置定时器
-            jobs.add(simpleCrawlJob);
-            service.submit(simpleCrawlJob); // 提交跑批任务
+            modelInfoMap.put(entranceUrl, modelInfo);
+            SimpleCrawlJob job = getModelInfo(entranceUrl);
+            jobs.add(job);
+            job.setCountDownLatch(countDownLatch);
+            service.execute(job);
         }
 
         try {
-            countDownLatch.await();
+            countDownLatch.await(60, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+
         // 爬取完毕之后，匹配信息到ModelInfos当中
         for (SimpleCrawlJob job : jobs) {
-            String url = job.getCrawlMeta().getUrl();
-//            job.getCrawlMeta().getSelectorRules().
-            ModelInfo modelInfo = modelInfoMap.get(url);
+            ModelInfo modelInfo = modelInfoMap.get(job.getCrawlMeta().getUrl());
             if (modelInfo == null) {
-                log.warn("crawl url:{} don't get match model", url);
+                log.warn("url:{} can't get model", job.getCrawlMeta().getUrl());
                 continue;
             }
-            List<String> picUrls = new ArrayList<>();
             List<CrawlResult> crawlResults = job.getCrawlResults();
-            for (CrawlResult crawlResult : crawlResults) {
-//                List<String> strings = crawlResult.getResult().get(imgRule);
-//                picUrls.addAll(strings);
+            if (crawlResults == null || crawlResults.isEmpty()) {
+                log.warn("modelInfo:{}, don't get results", modelInfo);
+                continue;
+            }
+            Map<List<String>, List<String>> result = crawlResults.get(0).getResult();
+            List<String> title = result.get(TITLE_RULE);
+            if (title != null && !title.isEmpty()) {
+                modelInfo.setTitle(title.get(0));
+            }
+            List<String> picCount = result.get(PIC_COUNT_RULE);
+            if (picCount != null && !picCount.isEmpty()) {
+                for (String s : picCount) {
+                    if (s.contains("图片数量")) {
+                        if (s.length() > 8) {
+                            modelInfo.setPicCount(Integer.valueOf(s.substring(6, s.length() - 1)));
+                        }
+                        break;
+                    } else {
+                        log.warn("modelInfo:{} don't has pic count", modelInfo);
+                        modelInfo.setPicCount(0);
+                    }
+                }
+
+                List<String> picUrls = new ArrayList<>();
+                List<String> strings = result.get(IMG_RULE);
+                if (strings == null || strings.isEmpty()) {
+                    log.warn("modelInfo:{} don't get any pics", modelInfo);
+                    continue;
+                }
+                // 使用规则计算出图片的url
+                String picUrl = strings.get(0);
+                if (picUrl.length() < 6) {
+                    log.warn("invalid picUrl:{}", picUrl);
+                    continue;
+                }
+                String headPicUrl = picUrl.substring(0, picUrl.length() - 5);
+                Integer modelInfoPicCount = modelInfo.getPicCount();
+                if (modelInfoPicCount == null) {
+                    modelInfoPicCount = 0;
+                }
+                for (int i = 1; i <= modelInfoPicCount; i++) {
+                    picUrls.add(headPicUrl + i + ".jpg");
+                }
+                modelInfo.setPicUrls(picUrls);
             }
         }
         return modelInfos;

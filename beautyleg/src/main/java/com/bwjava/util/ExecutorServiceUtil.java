@@ -22,9 +22,9 @@ public class ExecutorServiceUtil {
                 if (instance == null) {
                     ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
                             .setNameFormat("demo-pool-%d").build();
-                    instance = new ThreadPoolExecutor(5, 200,
+                    instance = new ThreadPoolExecutor(10, 200,
                             0L, TimeUnit.MILLISECONDS,
-                            new LinkedBlockingQueue<>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
+                            new LinkedBlockingQueue<>(2048), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
                     return instance;
                 }
             }

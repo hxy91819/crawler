@@ -47,4 +47,11 @@ public class BeautyLegClientTest {
                 modelInfos1);
         List<ModelInfo> modelInfos = client.doFetchAllUrls();
     }
+
+    @Test
+    public void subString(){
+        String s = "https://ii.hywly.com/a/1/25127/1.jpg";
+        String substring = s.substring(0, s.length() - 5);
+        System.out.println(substring);
+    }
 }

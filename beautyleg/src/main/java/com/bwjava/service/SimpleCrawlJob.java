@@ -67,8 +67,9 @@ public class SimpleCrawlJob extends AbstractJob {
             this.crawlResult = this.crawlResults.get(0);
         } finally {
             if (countDownLatch != null) {
-                log.info("current latch count:" + countDownLatch.getCount());
+                String name = Thread.currentThread().getName();
                 countDownLatch.countDown();
+                log.info("thread name:{}, current latch count:{}", name, countDownLatch.getCount());
             }
         }
     }
@@ -172,13 +173,13 @@ public class SimpleCrawlJob extends AbstractJob {
 
     @Override
     public void beforeRun() {
-        String name = Thread.currentThread().getName();
-        log.info("Thread:" + name + " start...");
+//        String name = Thread.currentThread().getName();
+//        log.info("Thread:" + name + " start...");
     }
 
     @Override
     public void afterRun() {
-        String name = Thread.currentThread().getName();
-        log.info("Thread:" + name + " stop...");
+//        String name = Thread.currentThread().getName();
+//        log.info("Thread:" + name + " stop...");
     }
 }
