@@ -112,10 +112,10 @@ class Demo extends React.Component {
                     {/*>beautys*/}
                     {/*</div>*/}
                     <div style={{display: '-webkit-box', display: 'flex', padding: '15px 0'}}>
-                        <img style={{height: '230px', marginRight: '15px'}} src={obj.thumbPic}
+                        <img style={{height: '300px', marginRight: '15px'}} src={obj.thumbPic}
                              referrerPolicy="no-referrer" alt=""/>
                         {/*<div style={{lineHeight: 1}}>*/}
-                        {/*<div style={{marginBottom: '8px', fontWeight: 'bold'}}>{obj.des}</div>*/}
+                        <div style={{marginBottom: '8px', fontWeight: 'bold'}}>{obj.title}</div>
                         {/*<div><span style={{fontSize: '30px', color: '#FF6E27'}}>{rowID}</span>¥</div>*/}
                         {/*</div>*/}
                     </div>

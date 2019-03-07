@@ -32,7 +32,7 @@
 
     <select id="selectEntranceurlThumbpic" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
-        entrance_url, thumb_Pic
+        entrance_url, thumb_Pic, title
         from t_beauty_model
     </select>
 

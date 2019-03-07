@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     name: test
-    url: jdbc:mysql://127.0.0.1:3306/crawler
+    url: jdbc:mysql://127.0.0.1:3306/crawler?characterEncoding=utf-8
     username: root
     password: 123456
     # 使用druid数据源

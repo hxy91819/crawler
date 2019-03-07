@@ -124,9 +124,7 @@ public class BeautyModelService {
 
     public List<BeautyModel> listAll(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<BeautyModel> beautyModels = beautyModelReaderDao.selectEntranceurlThumbpic();
-        List<BeautyModel> beautyModels1 = beautyModelReaderDao.selectEntranceurlThumbpic();
-        return beautyModels;
+        return beautyModelReaderDao.selectEntranceurlThumbpic();
     }
 
     @Resource
