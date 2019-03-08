@@ -122,7 +122,7 @@ public class BeautyPicClient {
         }
         CountDownLatch countDownLatch = new CountDownLatch(modelInfos.size());
 
-        Map<String, ModelInfo> modelInfoMap = new HashMap<>();
+        Map<String, ModelInfo> modelInfoMap = new HashMap<>(modelInfos.size());
         List<SimpleCrawlJob> jobs = new ArrayList<>();
         for (ModelInfo modelInfo : modelInfos) {
             String entranceUrl = modelInfo.getEntranceUrl();

@@ -16,7 +16,7 @@ import java.util.List;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class BeautyModelServiceTest {
+public class FetchServiceTest {
     private static List<String> urls = new ArrayList<>();
 
     static {
@@ -27,31 +27,33 @@ public class BeautyModelServiceTest {
     }
 
     @Resource
-    private BeautyModelService beautyModelService;
+    private FetchService fetchService;
+
+    @Resource
+    private BeautyLegService beautyLegService;
 
     @Test
     public void test() {
-        System.out.println(beautyModelService.save());
     }
 
     @Test
     public void testGetBasic() {
-        beautyModelService.crawlModalData("https://www.meitulu.com/item/15665.html");
+        fetchService.crawlModalData("https://www.meitulu.com/item/15665.html");
     }
 
     @Test
     public void testSaveAllModelEntrance() {
-        beautyModelService.fetchAndSaveBeautyList(urls, urls.size());
+        fetchService.fetchAndSaveBeautyList(urls, urls.size());
     }
 
     @Test
     public void testListAll() {
-        List<BeautyModel> beautyModels = beautyModelService.listAll(1, 2);
+        List<BeautyModel> beautyModels = beautyLegService.listPage(1, 2);
         System.out.println(beautyModels);
     }
 
     @Test
     public void testFetchAndSavePic() {
-        beautyModelService.fetchAndSaveBeautyPics();
+        fetchService.fetchAndSaveBeautyPics();
     }
 }

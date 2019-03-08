@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bwjava.service.dao.read.BeautyModelPicReaderDao">
+    <select id="selectPicUrls" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        pic_url
+        from t_beauty_model_pic
+        where model_id = #{id,jdbcType=BIGINT}
+    </select>
+</mapper>

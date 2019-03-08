@@ -44,8 +44,12 @@ public class BeautyModel implements Serializable {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         BeautyModel that = (BeautyModel) o;
         return Objects.equals(entranceUrl, that.entranceUrl);
     }

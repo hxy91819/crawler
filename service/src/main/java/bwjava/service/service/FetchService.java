@@ -17,6 +17,8 @@ import com.bwjava.util.ExecutorServiceUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.base.Preconditions;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -29,12 +31,13 @@ import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 /**
+ * 模特数据爬取服务
  * @author chenjing
  * @date 2019-02-24 11:57
  */
 @Log4j2
 @Service
-public class BeautyModelService {
+public class FetchService {
     @Resource
     private BeautyModelWriterDao beautyModelWriterDao;
 
@@ -46,13 +49,6 @@ public class BeautyModelService {
 
     @Resource
     private ExecutorService executorService;
-
-    public int save() {
-        BeautyModel beautyModel = new BeautyModel();
-        beautyModel.setId(snowFlake.nextId());
-        beautyModel.setModelName("test");
-        return beautyModelWriterDao.insertSelective(beautyModel);
-    }
 
     /**
      * 获取模特信息
@@ -91,7 +87,7 @@ public class BeautyModelService {
     /**
      * 爬取并保存模特列表
      *
-     * @param entranceUrls
+     * @param entranceUrls 入口地址列表
      * @param pageCount
      */
     public void fetchAndSaveBeautyList(List<String> entranceUrls, Integer pageCount) {
@@ -122,11 +118,6 @@ public class BeautyModelService {
         log.info("insert batch count:{}", count);
     }
 
-    public List<BeautyModel> listAll(int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        return beautyModelReaderDao.selectEntranceurlThumbpic();
-    }
-
     @Resource
     private BeautyModelPicWriterDao beautyModelPicWriterDao;
 
@@ -136,11 +127,10 @@ public class BeautyModelService {
     public void fetchAndSaveBeautyPics() {
         Page<BeautyModel> beautyModels;
         int pageNum = 1;
-        long pageTotal = 0;
+        long pageTotal;
         do {
             beautyModels = PageHelper.startPage(pageNum++, 100).doSelectPage(() -> beautyModelReaderDao.selectIdEntranceurl());
-            long total = beautyModels.getTotal();
-            pageTotal = total / 100;
+            pageTotal = beautyModels.getPages();
 
             List<ModelInfo> modelInfos = beautyModels.stream().map(
                     x -> {
@@ -184,24 +174,10 @@ public class BeautyModelService {
     }
 }
 
+@Getter
+@Setter
 class ModalData {
     private String title;
 
     private String picCount;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getPicCount() {
-        return picCount;
-    }
-
-    public void setPicCount(String picCount) {
-        this.picCount = picCount;
-    }
 }
