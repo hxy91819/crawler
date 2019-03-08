@@ -38,7 +38,7 @@ public class HttpUtils {
         SSLContextBuilder builder = new SSLContextBuilder();
         //         全部信任 不做身份鉴定
         builder.loadTrustMaterial(null, (x509Certificates, s) -> true);
-        HttpClient httpClient = HttpClientBuilder.create().setSslcontext(builder.build()).build();
+        HttpClient httpClient = HttpClientBuilder.create().setSSLContext(builder.build()).build();
 
         // 设置请求参数
         StringBuilder param = new StringBuilder(crawlMeta.getUrl()).append("?");
@@ -66,7 +66,7 @@ public class HttpUtils {
         SSLContextBuilder builder = new SSLContextBuilder();
 //         全部信任 不做身份鉴定
         builder.loadTrustMaterial(null, (x509Certificates, s) -> true);
-        HttpClient httpClient = HttpClientBuilder.create().setSslcontext(builder.build()).build();
+        HttpClient httpClient = HttpClientBuilder.create().setSSLContext(builder.build()).build();
 
         HttpPost httpPost = new HttpPost(crawlMeta.getUrl());
 

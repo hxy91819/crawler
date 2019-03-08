@@ -1,6 +1,6 @@
 package bwjava.service.controller;
 
-import bwjava.service.service.BeautyModelService;
+import bwjava.service.service.FetchService;
 import com.bwjava.util.ExecutorServiceUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,12 +15,12 @@ import javax.annotation.Resource;
 @RequestMapping("/api/fetch")
 public class FetchController {
     @Resource
-    private BeautyModelService beautyModelService;
+    private FetchService fetchService;
 
-    @RequestMapping("/fetchAll")
-    public String listByPage() {
+    @RequestMapping("/fetchAndSaveBeautyPics")
+    public String fetchAndSaveBeautyPics() {
         ExecutorServiceUtil.getInstance().execute(() -> {
-            beautyModelService.fetchAndSaveBeautyPics();
+            fetchService.fetchAndSaveBeautyPics();
         });
         return "ok";
     }

@@ -26,9 +26,21 @@ public class CrawlHttpConf {
 
 
     public enum HttpMethod {
+        /**
+         * get
+         */
         GET,
+        /**
+         * post
+         */
         POST,
+        /**
+         * options
+         */
         OPTIONS,
+        /**
+         * put
+         */
         PUT;
     }
 
