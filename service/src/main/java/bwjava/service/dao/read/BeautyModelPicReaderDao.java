@@ -1,6 +1,7 @@
 package bwjava.service.dao.read;
 
 import bwjava.service.entity.BeautyModelPic;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,5 +14,5 @@ public interface BeautyModelPicReaderDao {
      * @param modelId
      * @return
      */
-    List<BeautyModelPic> selectPicUrls(Long modelId);
+    List<BeautyModelPic> selectPicUrls(@Param("modelId") Long modelId);
 }

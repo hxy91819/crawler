@@ -5,6 +5,6 @@
         select
         pic_url
         from t_beauty_model_pic
-        where model_id = #{id,jdbcType=BIGINT}
+        where model_id = #{modelId,jdbcType=BIGINT}
     </select>
 </mapper>

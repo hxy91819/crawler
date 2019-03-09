@@ -1,8 +1,8 @@
 /* eslint no-dupe-keys: 0 */
-import {ListView} from 'antd-mobile';
+import {ListView, SearchBar} from 'antd-mobile';
 import React from 'react';
 import {debug} from "../utils/constant"
-import {listbypage} from "../utils/api"
+import {listbypage, listModelPics} from "../utils/api"
 
 // 数据源
 let data = [];
@@ -20,7 +20,7 @@ function genData(pIndex = 0) {
     return dataBlob;
 }
 
-class Demo extends React.Component {
+class ModelPicPage extends React.Component {
     constructor(props) {
         super(props);
         const dataSource = new ListView.DataSource({
@@ -34,10 +34,27 @@ class Demo extends React.Component {
     }
 
     pageNum = 1;// 第几个分页
+    modelId = 299583569800462353; // 模特id
 
     componentDidMount() {
-        let queryString = `pageNum=${this.pageNum}&pageSize=${NUM_ROWS}`
-        listbypage({
+        this.getData();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.match.params.modelId !== prevProps.match.params.modelId || this.modelId === '') {
+            // fetch or other component tasks necessary for rendering
+            const {modelId} = this.props.match.params;
+            //console.log('dataType:', dataType)
+            this.modelId = modelId;
+
+            debug('modelId:', this.modelId)
+            this.getData();
+        }
+    }
+
+    getData() {
+        let queryString = `pageNum=${this.pageNum}&pageSize=${NUM_ROWS}&modelId=${this.modelId}`
+        listModelPics({
             query: queryString,
             method: "get",
             async: true,
@@ -92,7 +109,7 @@ class Demo extends React.Component {
                 }}
             />
         );
-        let index = data.length - 1;
+        // let index = data.length - 1;
         const row = (rowData, sectionID, rowID) => {
             debug('rowId:', rowID)
             if (rowID > data.length - 1) {
@@ -100,22 +117,23 @@ class Demo extends React.Component {
             }
             debug('data:', data)
             const obj = data[rowID];
+            // noinspection JSDuplicatedDeclaration
             return (
                 <div key={rowID} style={{padding: '0 15px'}}>
                     {/*<div*/}
-                        {/*style={{*/}
-                            {/*lineHeight: '50px',*/}
-                            {/*color: '#888',*/}
-                            {/*fontSize: 18,*/}
-                            {/*borderBottom: '1px solid #F6F6F6',*/}
-                        {/*}}*/}
+                    {/*style={{*/}
+                    {/*lineHeight: '50px',*/}
+                    {/*color: '#888',*/}
+                    {/*fontSize: 18,*/}
+                    {/*borderBottom: '1px solid #F6F6F6',*/}
+                    {/*}}*/}
                     {/*>beautys*/}
                     {/*</div>*/}
                     <div style={{display: '-webkit-box', display: 'flex', padding: '15px 0'}}>
-                        <img style={{height: '300px', marginRight: '15px'}} src={obj.thumbPic}
+                        <img style={{widht: '95vw'}} src={obj.picUrl}
                              referrerPolicy="no-referrer" alt=""/>
                         {/*<div style={{lineHeight: 1}}>*/}
-                        <div style={{marginBottom: '8px', fontWeight: 'bold'}}>{obj.title}</div>
+                        {/*<div style={{marginBottom: '8px', fontWeight: 'bold'}}>{obj.title}</div>*/}
                         {/*<div><span style={{fontSize: '30px', color: '#FF6E27'}}>{rowID}</span>¥</div>*/}
                         {/*</div>*/}
                     </div>
@@ -126,7 +144,7 @@ class Demo extends React.Component {
             <ListView
                 ref={el => this.lv = el}
                 dataSource={this.state.dataSource}
-                renderHeader={() => <span>header</span>}
+                // renderHeader={() => <SearchBar placeholder="Search" maxLength={8}/>}
                 renderFooter={() => (<div style={{padding: 30, textAlign: 'center'}}>
                     {this.state.isLoading ? 'Loading...' : 'Loaded'}
                 </div>)}
@@ -146,4 +164,4 @@ class Demo extends React.Component {
     }
 }
 
-export default Demo;
+export default ModelPicPage;
