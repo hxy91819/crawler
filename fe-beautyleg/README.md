@@ -1,3 +1,16 @@
+# fe-beautyleg
+
+beautyleg前端，基于React + antd-mobile实现。
+
+## todo list
+
+- [] 分页查询到底了之后，仍旧继续进行查询
+- [] 列表页增加搜索功能
+- [] 列表页增加图片数量的显示
+- [] 为每张图片增加排序号，详情页里面按照排序号进行排序
+
+# app dev info
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
