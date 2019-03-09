@@ -100,6 +100,7 @@ class ModelListPage extends React.Component {
             }
             debug('data:', data)
             const obj = data[rowID];
+            // noinspection JSDuplicatedDeclaration
             return (
                 <div key={rowID} style={{padding: '0 15px'}}>
                     {/*<div*/}
