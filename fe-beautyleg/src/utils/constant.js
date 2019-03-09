@@ -30,8 +30,30 @@ const debug = function (msg, ...optionalParams) {
     if ("production" !== process.env.NODE_ENV) console.log(msg, ...optionalParams);
 };
 
+/**
+ *
+ * @param pIndex 页码
+ * @param numRows 每页行数
+ * @param top 封顶添加的数量
+ */
+function genData(pIndex = 0, numRows = 20, top = 20) {
+    const dataBlob = {};
+    let index = 1;
+    for (let i = 0; i < numRows; i++) {
+        if (index > top) {
+            break;
+        }
+        const ii = (pIndex * numRows) + i;
+        dataBlob[`${ii}`] = `row - ${ii}`;
+        index++;
+    }
+    debug('datablob:', dataBlob)
+    return dataBlob;
+}
+
 export {
     DOMAIN,
     GetBaidu,
     debug,
+    genData,
 };

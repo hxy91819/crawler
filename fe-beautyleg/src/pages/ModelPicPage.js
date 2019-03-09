@@ -1,24 +1,16 @@
 /* eslint no-dupe-keys: 0 */
-import {ListView, SearchBar} from 'antd-mobile';
+import {ListView} from 'antd-mobile';
 import React from 'react';
-import {debug} from "../utils/constant"
-import {listbypage, listModelPics} from "../utils/api"
+import {debug, genData} from "../utils/constant"
+import {listModelPics} from "../utils/api"
 
 // 数据源
 let data = [];
 
 const NUM_ROWS = 20;
 let pageIndex = 0;
+let reachEnd = false;
 
-function genData(pIndex = 0) {
-    const dataBlob = {};
-    for (let i = 0; i < NUM_ROWS; i++) {
-        const ii = (pIndex * NUM_ROWS) + i;
-        dataBlob[`${ii}`] = `row - ${ii}`;
-    }
-    debug('datablob:', dataBlob)
-    return dataBlob;
-}
 
 class ModelPicPage extends React.Component {
     constructor(props) {
@@ -33,37 +25,45 @@ class ModelPicPage extends React.Component {
         };
     }
 
-    pageNum = 1;// 第几个分页
-    modelId = 299583569800462353; // 模特id
 
     componentDidMount() {
-        this.getData();
+        debug('this.props.match.params:', this.props.match.params)
+        const {modelId} = this.props.match.params;
+        this.getData(modelId);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.match.params.modelId !== prevProps.match.params.modelId || this.modelId === '') {
+        if (this.props.match.params.modelId !== prevProps.match.params.modelId) {
+            reachEnd = false;
             // fetch or other component tasks necessary for rendering
-            const {modelId} = this.props.match.params;
-            //console.log('dataType:', dataType)
-            this.modelId = modelId;
-
-            debug('modelId:', this.modelId)
-            this.getData();
+            this.getData(this.props.match.params.modelId);
         }
     }
 
-    getData() {
-        let queryString = `pageNum=${this.pageNum}&pageSize=${NUM_ROWS}&modelId=${this.modelId}`
+    getData(modelId) {
+        let pageNum = pageIndex + 1;
+        let queryString = `pageNum=${pageNum}&pageSize=${NUM_ROWS}&modelId=${modelId}`
         listModelPics({
             query: queryString,
             method: "get",
             async: true,
         }).then(res => {
-                debug('res:', res)
+                // load new data
+                // hasMore: from backend data, indicates whether it is the last page, here is false
+                debug('res.length:', res.length)
+                if (res.length <= 0) {
+                    reachEnd = true;
+
+                    return;
+                }
+
+                if (this.state.isLoading && res.length <= 0) {
+                    return;
+                }
                 data = data.concat(res);
                 debug('data after concat:', data)
-                this.rData = genData();
-                debug('rData：', this.rData)
+                this.setState({isLoading: true});
+                this.rData = {...this.rData, ...genData(pageIndex++, NUM_ROWS, res.length)};
                 this.setState({
                     dataSource: this.state.dataSource.cloneWithRows(this.rData),
                     isLoading: false,
@@ -73,28 +73,11 @@ class ModelPicPage extends React.Component {
     }
 
     onEndReached = (event) => {
-        let queryString = `pageNum=${++this.pageNum}&pageSize=${NUM_ROWS}`
-        listbypage({
-            query: queryString,
-            method: "get",
-            async: true,
-        }).then(res => {
-                // load new data
-                // hasMore: from backend data, indicates whether it is the last page, here is false
-                if (this.state.isLoading && res.length <= 0) {
-                    return;
-                }
-                data = data.concat(res);
-                debug('data after concat:', data)
-                console.log('reach end', event);
-                this.setState({isLoading: true});
-                this.rData = {...this.rData, ...genData(++pageIndex)};
-                this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(this.rData),
-                    isLoading: false,
-                });
-            }
-        );
+        if (reachEnd) {
+            return;
+        }
+
+        this.getData()
     }
 
     render() {
@@ -111,11 +94,13 @@ class ModelPicPage extends React.Component {
         );
         // let index = data.length - 1;
         const row = (rowData, sectionID, rowID) => {
-            debug('rowId:', rowID)
+            // debug('rowId:', rowID)
             if (rowID > data.length - 1) {
-                rowID = data.length - 1;
+                // rowID = data.length - 1;
+                debug('reach the end')
+                return (<br/>);
             }
-            debug('data:', data)
+            // debug('data:', data)
             const obj = data[rowID];
             // noinspection JSDuplicatedDeclaration
             return (
@@ -130,7 +115,7 @@ class ModelPicPage extends React.Component {
                     {/*>beautys*/}
                     {/*</div>*/}
                     <div style={{display: '-webkit-box', display: 'flex', padding: '15px 0'}}>
-                        <img style={{widht: '95vw'}} src={obj.picUrl}
+                        <img style={{width: '95vw'}} src={obj.picUrl}
                              referrerPolicy="no-referrer" alt=""/>
                         {/*<div style={{lineHeight: 1}}>*/}
                         {/*<div style={{marginBottom: '8px', fontWeight: 'bold'}}>{obj.title}</div>*/}
