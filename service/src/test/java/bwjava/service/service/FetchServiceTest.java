@@ -1,6 +1,7 @@
 package bwjava.service.service;
 
 import bwjava.service.entity.BeautyModel;
+import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,8 +49,8 @@ public class FetchServiceTest {
 
     @Test
     public void testListAll() {
-        List<BeautyModel> beautyModels = beautyLegService.listPage(1, 2);
-        System.out.println(beautyModels);
+        List<BeautyModel> beautyModels = beautyLegService.listPage(1, 100);
+        System.out.println(JSON.toJSONString(beautyModels));
     }
 
     @Test
