@@ -17,23 +17,13 @@ import java.util.Map;
  */
 @Configuration
 public class DruidConfig {
-    /**
-     * 将所有前缀为spring.datasource下的配置项都加载到DataSource中
-     *
-     * @return
-     */
-//    @ConfigurationProperties(prefix = "spring.datasource")
-//    @Bean
-//    public DataSource druidDataSource() {
-//        return new DruidDataSource();
-//    }
 
     @Bean
     public ServletRegistrationBean druidStatViewServlet() {
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(),"/druid/*");
         Map<String, String> initParams = new HashMap<>();
         //　可配的属性都在 StatViewServlet 和其父类下
-        initParams.put("loginUsername", "admin-druid");
+        initParams.put("loginUsername", "admin");
         initParams.put("loginPassword", "111111");
         servletRegistrationBean.setInitParameters(initParams);
         return servletRegistrationBean;

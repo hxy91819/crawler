@@ -1,10 +1,11 @@
 package bwjava.service.controller;
 
-import bwjava.service.entity.BeautyModel;
+import bwjava.service.dto.ListPageVO;
 import bwjava.service.entity.BeautyModelPic;
 import bwjava.service.service.BeautyLegService;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,7 @@ import java.util.List;
  * @author chenjing
  * @date 2019-03-02 22:31
  */
+@Log4j2
 @RestController
 @RequestMapping("/api/beautyleg")
 public class BeautyLegController {
@@ -34,9 +36,10 @@ public class BeautyLegController {
      * @return
      */
     @RequestMapping("/listPage")
-    public String listByPage(@RequestParam int pageNum, @RequestParam int pageSize) {
-        List<BeautyModel> beautyModels = beautyLegService.listPage(pageNum, pageSize);
-        return JSON.toJSONString(beautyModels);
+    public List<ListPageVO> listByPage(@RequestParam int pageNum, @RequestParam int pageSize) {
+        List<ListPageVO> listPageVOS = beautyLegService.listPage(pageNum, pageSize);
+        log.info("listpagevos:{}", listPageVOS);
+        return listPageVOS;
     }
 
     /**

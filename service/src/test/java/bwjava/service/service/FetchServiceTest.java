@@ -1,6 +1,5 @@
 package bwjava.service.service;
 
-import bwjava.service.entity.BeautyModel;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,8 +48,7 @@ public class FetchServiceTest {
 
     @Test
     public void testListAll() {
-        List<BeautyModel> beautyModels = beautyLegService.listPage(1, 100);
-        System.out.println(JSON.toJSONString(beautyModels));
+        System.out.println(JSON.toJSONString(beautyLegService.listPage(1, 100)));
     }
 
     @Test
