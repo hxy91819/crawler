@@ -15,4 +15,6 @@ public interface BeautyModelPicReaderDao {
      * @return
      */
     List<BeautyModelPic> selectPicUrls(@Param("modelId") Long modelId);
+
+    List<BeautyModelPic> selectIdPicurl();
 }

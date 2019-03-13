@@ -24,3 +24,5 @@ CREATE TABLE crawler.`t_beauty_model_pic` (
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='模特信息表';
 
 ALTER TABLE crawler.t_beauty_model_pic ADD INDEX idx_model_id(model_id);
+
+alter table crawler.t_beauty_model_pic add column sort_no int comment '排序号';

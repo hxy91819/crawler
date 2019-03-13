@@ -14,7 +14,7 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, org, title, release_date, model_name, pic_count, entrance_url, thumb_pic, create_time, 
+    id, org, title, release_date, model_name, pic_count, entrance_url, thumb_pic, create_time,
     update_time
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -22,23 +22,5 @@
         <include refid="Base_Column_List"/>
         from t_beauty_model
         where id = #{id,jdbcType=BIGINT}
-    </select>
-
-    <select id="selectEntranceurl" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select
-        entrance_url
-        from t_beauty_model
-    </select>
-
-    <select id="selectEntranceurlThumbpic" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select
-        id, entrance_url, thumb_Pic, title, pic_count
-        from t_beauty_model
-    </select>
-
-    <select id="selectIdEntranceurl" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select
-        entrance_url, id
-        from t_beauty_model
     </select>
 </mapper>

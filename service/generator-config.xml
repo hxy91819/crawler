@@ -34,14 +34,14 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
-        <table tableName="t_beauty_model" domainObjectName="BeautyModel"
+<!--        <table tableName="t_beauty_model" domainObjectName="BeautyModel"-->
+<!--               enableDeleteByPrimaryKey="false" enableInsert="false" enableUpdateByPrimaryKey="false"-->
+<!--               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false" selectByExampleQueryId="false"/>-->
+        <table tableName="t_beauty_model_pic" domainObjectName="BeautyModelPic"
                enableDeleteByPrimaryKey="false" enableInsert="false" enableUpdateByPrimaryKey="false"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false"/>
-        <!--<table tableName="t_beauty_model_pic" domainObjectName="BeautyModelPic"-->
-               <!--enableDeleteByPrimaryKey="false" enableInsert="false" enableUpdateByPrimaryKey="false"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
-               <!--enableSelectByExample="false" selectByExampleQueryId="false"/>-->
     </context>
     <context id="write" targetRuntime="MyBatis3">
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
@@ -72,13 +72,13 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
-        <table tableName="t_beauty_model" domainObjectName="BeautyModel"
+<!--        <table tableName="t_beauty_model" domainObjectName="BeautyModel"-->
+<!--               enableSelectByPrimaryKey="false" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"/>-->
+        <table tableName="t_beauty_model_pic" domainObjectName="BeautyModelPic"
                enableSelectByPrimaryKey="false" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>
-        <!--<table tableName="t_beauty_model_pic" domainObjectName="BeautyModelPic"-->
-               <!--enableSelectByPrimaryKey="false" enableCountByExample="false"-->
-               <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
     </context>
 </generatorConfiguration>
