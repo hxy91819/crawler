@@ -1,0 +1,1 @@
+alter table crawler.t_beauty_model_pic add column sort_no int comment '排序号';

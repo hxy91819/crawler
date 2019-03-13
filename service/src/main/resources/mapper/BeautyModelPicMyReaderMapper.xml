@@ -6,11 +6,13 @@
         pic_url
         from t_beauty_model_pic
         where model_id = #{modelId,jdbcType=BIGINT}
+        order by sort_no
     </select>
 
     <select id="selectIdPicurl" resultMap="BaseResultMap">
         select
         id, pic_url
         from t_beauty_model_pic
+        where sort_no is null
     </select>
 </mapper>
