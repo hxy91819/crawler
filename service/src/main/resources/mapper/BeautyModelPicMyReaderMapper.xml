@@ -7,4 +7,10 @@
         from t_beauty_model_pic
         where model_id = #{modelId,jdbcType=BIGINT}
     </select>
+
+    <select id="selectIdPicurl" resultMap="BaseResultMap">
+        select
+        id, pic_url
+        from t_beauty_model_pic
+    </select>
 </mapper>

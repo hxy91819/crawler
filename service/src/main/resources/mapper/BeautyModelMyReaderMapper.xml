@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bwjava.service.dao.read.BeautyModelReaderDao">
+    <select id="selectEntranceurl" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        entrance_url
+        from t_beauty_model
+    </select>
+
+    <select id="selectEntranceurlThumbpic" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        id, entrance_url, thumb_Pic, title, pic_count
+        from t_beauty_model
+    </select>
+
+    <select id="selectIdEntranceurl" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        entrance_url, id
+        from t_beauty_model
+    </select>
+</mapper>
