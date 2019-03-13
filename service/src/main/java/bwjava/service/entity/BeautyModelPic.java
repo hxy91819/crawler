@@ -19,6 +19,9 @@ public class BeautyModelPic implements Serializable {
     /** 修改时间 */
     private Date updateTime;
 
+    /** 排序号 */
+    private Integer sortNo;
+
     private static final long serialVersionUID = 1L;
 
     /** 主键编号 */
@@ -69,5 +72,15 @@ public class BeautyModelPic implements Serializable {
     /** 修改时间 */
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    /** 排序号 */
+    public Integer getSortNo() {
+        return sortNo;
+    }
+
+    /** 排序号 */
+    public void setSortNo(Integer sortNo) {
+        this.sortNo = sortNo;
     }
 }
