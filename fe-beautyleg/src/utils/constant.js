@@ -11,7 +11,6 @@ const DOMAIN = 'http://localhost:8080';
 const GetBaidu = props => {
     let children = props.children;
     // eslint-disable-next-line
-    // noinspection JSUnusedLocalSymbols
     let _hmt = _hmt || [];
     (function () {
         const hm = document.createElement("script");
