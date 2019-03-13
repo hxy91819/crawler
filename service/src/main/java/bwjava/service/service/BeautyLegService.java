@@ -55,6 +55,7 @@ public class BeautyLegService {
      * @return
      */
     public Page<BeautyModelPic> listModelPics(long modelId, int pageNum, int pageSize) {
-        return PageHelper.startPage(pageNum, pageSize).doSelectPage(() -> beautyModelPicReaderDao.selectPicUrls(modelId));
+        return PageHelper.startPage(pageNum, pageSize)
+                .doSelectPage(() -> beautyModelPicReaderDao.selectPicUrls(modelId));
     }
 }

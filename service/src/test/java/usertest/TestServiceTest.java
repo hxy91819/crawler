@@ -2,7 +2,10 @@ package usertest;
 
 import bwjava.service.ServiceApplication;
 import bwjava.service.dao.read.BeautyModelPicReaderDao;
+import bwjava.service.dao.write.BeautyModelPicWriterDao;
 import bwjava.service.entity.BeautyModelPic;
+import com.bwjava.util.ExecutorServiceUtil;
+import com.google.common.util.concurrent.RateLimiter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,15 +27,31 @@ public class TestServiceTest {
     @Resource
     private BeautyModelPicReaderDao beautyModelPicReaderDao;
 
+    @Resource
+    private BeautyModelPicWriterDao beautyModelPicWriterDao;
+
+    RateLimiter rateLimiter = RateLimiter.create(500);
+
     @Test
     public void test(){
         List<BeautyModelPic> beautyModelPics = beautyModelPicReaderDao.selectIdPicurl();
 
+        int i = 0;
         for (BeautyModelPic beautyModelPic : beautyModelPics) {
             String format = "modelId is %s, picurl is %s, sortNo is %s";
+            int sort_no = PicUrlHandler.getNumber(beautyModelPic.getPicUrl());
             String msg = String.format(format, beautyModelPic.getModelId(), beautyModelPic.getPicUrl(),
-                    PicUrlHandler.getNumber(beautyModelPic.getPicUrl()));
+                    sort_no);
             System.out.println(msg);
+            beautyModelPic.setSortNo(sort_no);
+
+            rateLimiter.acquire();
+            i++;
+            int finalI = i;
+            ExecutorServiceUtil.getInstance().execute(()->{
+                beautyModelPicWriterDao.updateByPrimaryKeySelective(beautyModelPic);
+                System.out.println(finalI + " update");
+            });
         }
     }
 }

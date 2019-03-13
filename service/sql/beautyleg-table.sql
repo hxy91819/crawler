@@ -25,4 +25,3 @@ CREATE TABLE crawler.`t_beauty_model_pic` (
 
 ALTER TABLE crawler.t_beauty_model_pic ADD INDEX idx_model_id(model_id);
 
-alter table crawler.t_beauty_model_pic add column sort_no int comment '排序号';
