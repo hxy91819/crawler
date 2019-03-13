@@ -7,10 +7,13 @@
         from t_beauty_model
     </select>
 
-    <select id="selectEntranceurlThumbpic" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectEntranceurlThumbpic" resultMap="BaseResultMap">
         select
         id, entrance_url, thumb_Pic, title, pic_count
         from t_beauty_model
+        <if test="searchContent != null">
+            where title like #{searchContent}
+        </if>
     </select>
 
     <select id="selectIdEntranceurl" parameterType="java.lang.Long" resultMap="BaseResultMap">

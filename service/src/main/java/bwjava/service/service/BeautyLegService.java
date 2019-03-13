@@ -9,6 +9,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -36,8 +37,12 @@ public class BeautyLegService {
      * @param pageSize
      * @return
      */
-    public List<ListPageVO> listPage(int pageNum, int pageSize) {
-        Page<BeautyModel> listPageVOS = PageHelper.startPage(pageNum, pageSize).doSelectPage(() -> beautyModelReaderDao.selectEntranceurlThumbpic());
+    public List<ListPageVO> listPage(int pageNum, int pageSize, String searchContent) {
+        if (!StringUtils.isEmpty(searchContent)) {
+            searchContent = "%" + searchContent + "%";
+        }
+        String finalSearchContent = searchContent;
+        Page<BeautyModel> listPageVOS = PageHelper.startPage(pageNum, pageSize).doSelectPage(() -> beautyModelReaderDao.selectEntranceurlThumbpic(finalSearchContent));
         return listPageVOS.stream().map(x -> {
             ListPageVO listPageVO = new ListPageVO();
             BeanUtils.copyProperties(x, listPageVO);
