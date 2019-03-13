@@ -1,5 +1,5 @@
-// const DOMAIN = 'http://doc.chenjingtalk.com';
-const DOMAIN = 'http://localhost:8080';
+const DOMAIN = 'http://doc.chenjingtalk.com';
+// const DOMAIN = 'http://localhost:8080';
 // const DOMAIN = 'https://easy-mock.com/mock/5bff5a0e7eb9262450270ec0';
 
 /**
