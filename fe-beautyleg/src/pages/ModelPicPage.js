@@ -9,8 +9,6 @@ let data = [];
 
 const NUM_ROWS = 20;
 let pageIndex = 0;
-let reachEnd = false;
-
 
 class ModelPicPage extends React.Component {
     constructor(props) {
@@ -22,6 +20,7 @@ class ModelPicPage extends React.Component {
         this.state = {
             dataSource,
             isLoading: true,
+            reachEnd: false
         };
     }
 
@@ -29,12 +28,15 @@ class ModelPicPage extends React.Component {
     componentDidMount() {
         debug('this.props.match.params:', this.props.match.params)
         const {modelId} = this.props.match.params;
+        this.modelId = modelId;
         this.getData(modelId);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.match.params.modelId !== prevProps.match.params.modelId) {
-            reachEnd = false;
+            this.setState({
+                reachEnd: false
+            })
             // fetch or other component tasks necessary for rendering
             this.getData(this.props.match.params.modelId);
         }
@@ -52,8 +54,9 @@ class ModelPicPage extends React.Component {
                 // hasMore: from backend data, indicates whether it is the last page, here is false
                 debug('res.length:', res.length)
                 if (res.length <= 0) {
-                    reachEnd = true;
-
+                    this.setState({
+                        reachEnd: true
+                    })
                     return;
                 }
 
@@ -73,11 +76,11 @@ class ModelPicPage extends React.Component {
     }
 
     onEndReached = (event) => {
-        if (reachEnd) {
+        if (this.state.reachEnd) {
             return;
         }
 
-        this.getData()
+        this.getData(this.modelId)
     }
 
     render() {
@@ -131,7 +134,7 @@ class ModelPicPage extends React.Component {
                 dataSource={this.state.dataSource}
                 // renderHeader={() => <SearchBar placeholder="Search" maxLength={8}/>}
                 renderFooter={() => (<div style={{padding: 30, textAlign: 'center'}}>
-                    {this.state.isLoading ? 'Loading...' : 'Loaded'}
+                    {this.state.reachEnd ? 'The End' : (this.state.isLoading ? 'Loading...' : 'Loaded')}
                 </div>)}
                 renderRow={row}
                 renderSeparator={separator}
