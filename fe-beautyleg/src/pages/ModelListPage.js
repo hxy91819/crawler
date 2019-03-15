@@ -9,7 +9,6 @@ import {Link} from "react-router-dom"
 const NUM_ROWS = 20;
 let data = [];
 let pageIndex = 0;
-let reachEnd = false;
 let searchContent = undefined;
 
 const initDataSource = new ListView.DataSource({
@@ -24,6 +23,7 @@ class ModelListPage extends React.Component {
         this.state = {
             dataSource,
             isLoading: true,
+            reachEnd: false
         };
     }
 
@@ -48,9 +48,8 @@ class ModelListPage extends React.Component {
                 // hasMore: from backend data, indicates whether it is the last page, here is false
                 if (res.length <= 0) {
                     debug("reach the end")
-                    reachEnd = true;
                     this.setState({
-                        reachEnd: reachEnd
+                        reachEnd: true
                     })
                     return;
                 }
@@ -70,7 +69,7 @@ class ModelListPage extends React.Component {
     }
 
     onEndReached = (event) => {
-        if (reachEnd) {
+        if (this.state.reachEnd) {
             debug('reach end')
             return;
         }
@@ -159,10 +158,10 @@ class ModelListPage extends React.Component {
         pageIndex = 0;
         data = [];
         this.rData = [];
-        reachEnd = false;
         searchContent = undefined;
         this.setState({
-            dataSource: initDataSource
+            dataSource: initDataSource,
+            reachEnd: false
         })
     }
 }
