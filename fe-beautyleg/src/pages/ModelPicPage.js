@@ -118,7 +118,7 @@ class ModelPicPage extends React.Component {
                     {/*>beautys*/}
                     {/*</div>*/}
                     <div style={{display: '-webkit-box', display: 'flex', padding: '15px 0'}}>
-                        <img style={{width: '95vw'}} src={obj.picUrl}
+                        <img style={{width: '100%'}} src={obj.picUrl}
                              referrerPolicy="no-referrer" alt=""/>
                         {/*<div style={{lineHeight: 1}}>*/}
                         {/*<div style={{marginBottom: '8px', fontWeight: 'bold'}}>{obj.title}</div>*/}

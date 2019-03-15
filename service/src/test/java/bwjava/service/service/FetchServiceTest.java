@@ -55,4 +55,9 @@ public class FetchServiceTest {
     public void testFetchAndSavePic() {
         fetchService.fetchAndSaveBeautyPics();
     }
+
+    @Test
+    public void testFetchByPage(){
+        fetchService.fetchAndSaveBeautyPicsByPage(1, 8);
+    }
 }

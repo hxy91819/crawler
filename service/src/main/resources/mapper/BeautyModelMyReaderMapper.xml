@@ -20,5 +20,6 @@
         select
         entrance_url, id
         from t_beauty_model
+        order by id desc
     </select>
 </mapper>
