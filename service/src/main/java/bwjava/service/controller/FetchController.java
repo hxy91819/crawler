@@ -3,6 +3,7 @@ package bwjava.service.controller;
 import bwjava.service.service.FetchService;
 import com.bwjava.util.ExecutorServiceUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -22,6 +23,12 @@ public class FetchController {
         ExecutorServiceUtil.getInstance().execute(() -> {
             fetchService.fetchAndSaveBeautyPics();
         });
+        return "ok";
+    }
+
+    @RequestMapping("/fetchAndSaveBeautyPicsByPage")
+    public String fetchAndSaveBeautyPicsByPage(@RequestParam int pageNum, @RequestParam int pageSize) {
+        fetchService.fetchAndSaveBeautyPicsByPage(pageNum, pageSize);
         return "ok";
     }
 }

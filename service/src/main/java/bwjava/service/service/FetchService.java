@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 
 /**
  * 模特数据爬取服务
+ *
  * @author chenjing
  * @date 2019-02-24 11:57
  */
@@ -132,45 +133,65 @@ public class FetchService {
             beautyModels = PageHelper.startPage(pageNum++, 100).doSelectPage(() -> beautyModelReaderDao.selectIdEntranceurl());
             pageTotal = beautyModels.getPages();
 
-            List<ModelInfo> modelInfos = beautyModels.stream().map(
-                    x -> {
-                        ModelInfo modelInfo = new ModelInfo();
-                        modelInfo.setId(x.getId());
-                        modelInfo.setEntranceUrl(x.getEntranceUrl());
-                        return modelInfo;
-                    }
-            ).collect(Collectors.toList());
-            BeautyPicClient client = new BeautyPicClient(5, modelInfos);
-            List<ModelInfo> modelInfoWithPics = client.doFetchAllUrls();
-            for (ModelInfo modelInfoWithPic : modelInfoWithPics) {
-                // 更新基本信息
-                BeautyModel beautyModel = new BeautyModel();
-                BeanUtils.copyProperties(modelInfoWithPic, beautyModel);
-                beautyModelWriterDao.updateByPrimaryKeySelective(beautyModel);
-                // 删除所有原图
-                beautyModelPicWriterDao.deleteByModelId(modelInfoWithPic.getId());
-                List<String> picUrls = modelInfoWithPic.getPicUrls();
-                // 批量插入新图
-                if (picUrls == null || picUrls.isEmpty()) {
-                    log.warn("modelInfo:{}, don't have pic", modelInfoWithPic);
-                    continue;
-                }
-                List<BeautyModelPic> beautyModelPics = picUrls.parallelStream().map(x -> {
-                    long l = snowFlake.nextId();
-
-                    BeautyModelPic beautyModelPic = new BeautyModelPic();
-                    beautyModelPic.setId(l);
-                    beautyModelPic.setModelId(modelInfoWithPic.getId());
-                    beautyModelPic.setPicUrl(x);
-                    return beautyModelPic;
-                }).collect(Collectors.toList());
-                Runnable insertRunnable = () -> {
-                    int count = beautyModelPicWriterDao.insertBatch(beautyModelPics);
-                    log.info("insert batch count:{}", count);
-                };
-                ExecutorServiceUtil.getInstance().execute(insertRunnable);
-            }
+            fetchAndSaveByModels(beautyModels);
         } while (pageTotal >= pageNum);
+    }
+
+    /**
+     * 指定需要跑批的数据
+     *
+     * @param pageNum
+     * @param pageSize
+     */
+    public void fetchAndSaveBeautyPicsByPage(int pageNum, int pageSize) {
+        Page<BeautyModel> beautyModels = PageHelper.startPage(pageNum, pageSize).doSelectPage(() -> beautyModelReaderDao.selectIdEntranceurl());
+        fetchAndSaveByModels(beautyModels);
+    }
+
+    /**
+     * 根据BeautyModels进行爬取并保存数据库
+     *
+     * @param beautyModels beautyModel列表
+     */
+    private void fetchAndSaveByModels(List<BeautyModel> beautyModels) {
+        List<ModelInfo> modelInfos = beautyModels.stream().map(
+                x -> {
+                    ModelInfo modelInfo = new ModelInfo();
+                    modelInfo.setId(x.getId());
+                    modelInfo.setEntranceUrl(x.getEntranceUrl());
+                    return modelInfo;
+                }
+        ).collect(Collectors.toList());
+        BeautyPicClient client = new BeautyPicClient(5, modelInfos);
+        List<ModelInfo> modelInfoWithPics = client.doFetchAllUrls();
+        for (ModelInfo modelInfoWithPic : modelInfoWithPics) {
+            // 更新基本信息
+            BeautyModel beautyModel = new BeautyModel();
+            BeanUtils.copyProperties(modelInfoWithPic, beautyModel);
+            beautyModelWriterDao.updateByPrimaryKeySelective(beautyModel);
+            // 删除所有原图
+            beautyModelPicWriterDao.deleteByModelId(modelInfoWithPic.getId());
+            List<String> picUrls = modelInfoWithPic.getPicUrls();
+            // 批量插入新图
+            if (picUrls == null || picUrls.isEmpty()) {
+                log.warn("modelInfo:{}, don't have pic", modelInfoWithPic);
+                continue;
+            }
+            List<BeautyModelPic> beautyModelPics = picUrls.parallelStream().map(x -> {
+                long l = snowFlake.nextId();
+
+                BeautyModelPic beautyModelPic = new BeautyModelPic();
+                beautyModelPic.setId(l);
+                beautyModelPic.setModelId(modelInfoWithPic.getId());
+                beautyModelPic.setPicUrl(x);
+                return beautyModelPic;
+            }).collect(Collectors.toList());
+            Runnable insertRunnable = () -> {
+                int count = beautyModelPicWriterDao.insertBatch(beautyModelPics);
+                log.info("insert batch count:{}", count);
+            };
+            ExecutorServiceUtil.getInstance().execute(insertRunnable);
+        }
     }
 }
 
