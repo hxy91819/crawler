@@ -20,9 +20,10 @@ public class FetchServiceTest {
     private static List<String> urls = new ArrayList<>();
 
     static {
-        urls.add("https://www.meituri.com/x/57/");
-        for (int i = 1; i <= 37; i++) {
-            urls.add("https://www.meituri.com/x/57/index_" + i + ".html");
+        String entranceUrl = "https://www.meituri.com/x/63/";
+        urls.add(entranceUrl);
+        for (int i = 1; i <= 11; i++) {
+            urls.add(entranceUrl + "index_" + i + ".html");
         }
     }
 
@@ -37,13 +38,8 @@ public class FetchServiceTest {
     }
 
     @Test
-    public void testGetBasic() {
-        fetchService.crawlModalData("https://www.meitulu.com/item/15665.html");
-    }
-
-    @Test
     public void testSaveAllModelEntrance() {
-        fetchService.fetchAndSaveBeautyList(urls, urls.size());
+        fetchService.fetchAndSaveBeautyList("https://www.meituri.com/x/74/");
     }
 
     @Test
@@ -53,11 +49,11 @@ public class FetchServiceTest {
 
     @Test
     public void testFetchAndSavePic() {
-        fetchService.fetchAndSaveBeautyPics();
+        fetchService.fetchAndSaveBeautyPics("秀人网MyGirl美媛馆写真集大全");
     }
 
     @Test
-    public void testFetchByPage(){
-        fetchService.fetchAndSaveBeautyPicsByPage(1, 8);
+    public void testFetchByPage() {
+        fetchService.fetchAndSaveBeautyPicsByPage("秀人网MyGirl美媛馆写真集大全", 1, 8);
     }
 }

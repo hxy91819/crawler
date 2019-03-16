@@ -11,16 +11,8 @@ import java.util.List;
  * @date 2019-02-24 16:03
  */
 public class BeautyListClientTest {
-    private static List<String> urls = new ArrayList<>();
 
-    static {
-        urls.add("https://www.meituri.com/x/57/");
-        for (int i = 1; i <= 37; i++) {
-            urls.add("https://www.meituri.com/x/57/index_" + i + ".html");
-        }
-    }
-
-    private static BeautyListClient beautyListClient = new BeautyListClient(urls, 0);
+    private static BeautyListClient beautyListClient = new BeautyListClient("https://www.meituri.com/x/63/");
 
     @Test
     public void testGetList() {
@@ -28,4 +20,14 @@ public class BeautyListClientTest {
         System.out.println("end");
     }
 
+    @Test
+    public void getSuiteCount() {
+        beautyListClient.getSuiteCount();
+    }
+
+    @Test
+    public void test(){
+        double ceil = Math.ceil((double)450 /(double) 40);
+        System.out.println(ceil);
+    }
 }

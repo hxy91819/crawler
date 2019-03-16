@@ -16,10 +16,11 @@
         </if>
     </select>
 
-    <select id="selectIdEntranceurl" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectIdEntranceurl" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         entrance_url, id
         from t_beauty_model
+        where org = #{org}
         order by id desc
     </select>
 </mapper>

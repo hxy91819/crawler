@@ -19,16 +19,16 @@ public class FetchController {
     private FetchService fetchService;
 
     @RequestMapping("/fetchAndSaveBeautyPics")
-    public String fetchAndSaveBeautyPics() {
+    public String fetchAndSaveBeautyPics(@RequestParam String org) {
         ExecutorServiceUtil.getInstance().execute(() -> {
-            fetchService.fetchAndSaveBeautyPics();
+            fetchService.fetchAndSaveBeautyPics(org);
         });
         return "ok";
     }
 
     @RequestMapping("/fetchAndSaveBeautyPicsByPage")
-    public String fetchAndSaveBeautyPicsByPage(@RequestParam int pageNum, @RequestParam int pageSize) {
-        fetchService.fetchAndSaveBeautyPicsByPage(pageNum, pageSize);
+    public String fetchAndSaveBeautyPicsByPage(@RequestParam String org, @RequestParam int pageNum, @RequestParam int pageSize) {
+        fetchService.fetchAndSaveBeautyPicsByPage(org, pageNum, pageSize);
         return "ok";
     }
 }
