@@ -44,7 +44,7 @@ public class FetchServiceTest {
 
     @Test
     public void testListAll() {
-        System.out.println(JSON.toJSONString(beautyLegService.listPage(1, 100, "Abby")));
+        System.out.println(JSON.toJSONString(beautyLegService.listPage("1", 1, 100, "Abby")));
     }
 
     @Test

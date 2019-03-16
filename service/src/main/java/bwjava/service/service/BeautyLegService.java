@@ -37,12 +37,13 @@ public class BeautyLegService {
      * @param pageSize
      * @return
      */
-    public List<ListPageVO> listPage(int pageNum, int pageSize, String searchContent) {
+    public List<ListPageVO> listPage(String org, int pageNum, int pageSize, String searchContent) {
         if (!StringUtils.isEmpty(searchContent)) {
             searchContent = "%" + searchContent + "%";
         }
         String finalSearchContent = searchContent;
-        Page<BeautyModel> listPageVOS = PageHelper.startPage(pageNum, pageSize).doSelectPage(() -> beautyModelReaderDao.selectEntranceurlThumbpic(finalSearchContent));
+        Page<BeautyModel> listPageVOS = PageHelper.startPage(pageNum, pageSize)
+                .doSelectPage(() -> beautyModelReaderDao.selectEntranceurlThumbpic(org, finalSearchContent));
         return listPageVOS.stream().map(x -> {
             ListPageVO listPageVO = new ListPageVO();
             BeanUtils.copyProperties(x, listPageVO);

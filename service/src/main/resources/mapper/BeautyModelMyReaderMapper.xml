@@ -11,8 +11,9 @@
         select
         id, entrance_url, thumb_Pic, title, pic_count
         from t_beauty_model
+        where org = #{org}
         <if test="searchContent != null">
-            where title like #{searchContent}
+            and title like #{searchContent}
         </if>
     </select>
 

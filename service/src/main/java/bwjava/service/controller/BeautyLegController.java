@@ -36,8 +36,8 @@ public class BeautyLegController {
      * @return
      */
     @RequestMapping("/listPage")
-    public List<ListPageVO> listByPage(@RequestParam int pageNum, @RequestParam int pageSize, @RequestParam(required = false) String searchContent) {
-        List<ListPageVO> listPageVOS = beautyLegService.listPage(pageNum, pageSize, searchContent);
+    public List<ListPageVO> listByPage(@RequestParam String org, @RequestParam int pageNum, @RequestParam int pageSize, @RequestParam(required = false) String searchContent) {
+        List<ListPageVO> listPageVOS = beautyLegService.listPage(org, pageNum, pageSize, searchContent);
         log.info("listpagevos:{}", listPageVOS);
         return listPageVOS;
     }

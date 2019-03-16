@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
+ * 管理类，不开放到外网
  * @author chenjing
  * @date 2019-03-07 22:50
  */
 @RestController
-@RequestMapping("/api/fetch")
+@RequestMapping("/manage/fetch")
 public class FetchController {
     @Resource
     private FetchService fetchService;

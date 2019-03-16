@@ -10,7 +10,7 @@ public interface BeautyModelReaderDao {
 
     List<BeautyModel> selectEntranceurl();
 
-    List<BeautyModel> selectEntranceurlThumbpic(@Param("searchContent") String searchContent);
+    List<BeautyModel> selectEntranceurlThumbpic(@Param("org") String org, @Param("searchContent") String searchContent);
 
     List<BeautyModel> selectIdEntranceurl(@Param("org") String org);
 }

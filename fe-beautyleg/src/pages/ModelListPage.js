@@ -11,6 +11,10 @@ let data = [];
 let pageIndex = 0;
 let searchContent = undefined;
 
+const beautyLeg = "BeautyLeg";
+const uGirls = "尤果网Ugirls写真全集";
+const myGirl = "秀人网MyGirl美媛馆写真集大全";
+
 const initDataSource = new ListView.DataSource({
     rowHasChanged: (row1, row2) => row1 !== row2,
 });
@@ -30,15 +34,41 @@ class ModelListPage extends React.Component {
 
     componentDidMount() {
         debug('modellistpage did mount')
-        this.getData();
+        let org = this.props.match.params.org
+        this.getData(org);
     }
 
-    getData() {
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        let org = this.props.match.params.org
+        if (org !== prevProps.match.params.org) {
+            debug(org)
+            this.setState({
+                reachEnd: false
+            })
+            // fetch or other component tasks necessary for rendering
+            this.getData(org);
+        }
+    }
+
+    getData(org) {
         let pageNum = pageIndex + 1;
         let queryString = `pageNum=${pageNum}&pageSize=${NUM_ROWS}`
         if (searchContent !== undefined) {
             queryString += `&searchContent=${searchContent}`
         }
+        let orgBe;
+        switch (org) {
+            case "myGirl":
+                orgBe = myGirl;
+                break;
+            case "uGirls":
+                orgBe = uGirls;
+                break;
+            default:
+                orgBe = beautyLeg;
+                break;
+        }
+        queryString += `&org=${orgBe}`
         listbypage({
             query: queryString,
             method: "get",
