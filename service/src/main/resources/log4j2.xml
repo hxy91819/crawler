@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- monitorInterval配置成一个正整数，则每隔这么久的时间（秒），log4j2会刷新一次配置。如果不配置则不会动态刷新
  status Log4j内部的日志打印级别，设置为error，避免打印内部日志-->
-<Configuration status="INFO" monitorInterval="30">
+<Configuration status="ERROR" monitorInterval="30">
     <Properties>
         <Property name="baseLogDir">logs</Property>
         <!--        <Property name="pattern">[%-5p][%d{yyyyMMdd HH:mm:ss,SSS}][%C{1}:%L] %m%n</Property>-->
@@ -42,7 +42,7 @@
     </Appenders>
     <Loggers>
         <!-- root是默认的logger，也是所有logger的父级logger，如果需要，可以在这里配置一个文件appender以打印外部组件日志 -->
-        <AsyncRoot level="INFO">
+        <AsyncRoot level="DEBUG">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="APPINFO_APPENDER"/>
         </AsyncRoot>

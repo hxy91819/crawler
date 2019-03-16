@@ -41,3 +41,7 @@ pageHelper:
   reasonable: false
   supportMethodsArguments: true
   params: count=countSql
+
+#更换为log4j2必须
+logging:
+  config: classpath:log4j2.xml
