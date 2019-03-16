@@ -6,8 +6,11 @@ import bwjava.service.dao.write.BeautyModelPicWriterDao;
 import bwjava.service.entity.BeautyModelPic;
 import com.bwjava.util.ExecutorServiceUtil;
 import com.google.common.util.concurrent.RateLimiter;
+import org.jasypt.encryption.StringEncryptor;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -33,7 +36,7 @@ public class TestServiceTest {
     RateLimiter rateLimiter = RateLimiter.create(500);
 
     @Test
-    public void test(){
+    public void test() {
         List<BeautyModelPic> beautyModelPics = beautyModelPicReaderDao.selectIdPicurl();
 
         int i = 0;
@@ -48,11 +51,27 @@ public class TestServiceTest {
             rateLimiter.acquire();
             i++;
             int finalI = i;
-            ExecutorServiceUtil.getInstance().execute(()->{
+            ExecutorServiceUtil.getInstance().execute(() -> {
                 beautyModelPicWriterDao.updateByPrimaryKeySelective(beautyModelPic);
                 System.out.println(finalI + " update");
             });
         }
+    }
+
+    @Autowired
+    StringEncryptor encryptor;
+
+
+    @Test
+    public void getPass() {
+        String url = encryptor.encrypt("jdbc:mysql://127.0.0.1:3306/crawler?characterEncoding=utf-8");
+        String name = encryptor.encrypt("root");
+        String password = encryptor.encrypt("===password===");
+        System.out.println(url);
+        System.out.println(name);
+        System.out.println(password);
+        Assert.assertTrue(name.length() > 0);
+        Assert.assertTrue(password.length() > 0);
     }
 }
 

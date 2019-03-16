@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     name: test
-    url: jdbc:mysql://127.0.0.1:3306/crawler?characterEncoding=utf-8
-    username: root
-    password: 123456
+    url: ENC(ZzZpfvvBx6/T+CehhQVZ3vmDjWt7Dm5AiKcsaHwDRmktLWx6pimGI53VRi0PdEt8/nl2mx3INSFVNXfNJYSfiUWRmOm2Xe7v)
+    username: ENC(XTFN6H3zDREya+D1uGbLxg==)
+    password: ENC(Bz12eKK9Sm8bo6dmVgy4A15ZwcBUp1MN)
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -45,3 +45,8 @@ pageHelper:
 #更换为log4j2必须
 logging:
   config: classpath:log4j2.xml
+
+#jasypt加密的密匙
+jasypt:
+  encryptor:
+    password: EbfYkitulv73I2p0mXI50JMXoaxZTKJ7

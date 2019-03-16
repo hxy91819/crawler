@@ -29,3 +29,4 @@ HELP.md
 
 /logs/
 log.out
+*.gz
