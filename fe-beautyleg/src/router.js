@@ -2,7 +2,6 @@ import React from 'react';
 import {Route, Switch} from 'react-router';
 import {BrowserRouter,} from 'react-router-dom';
 import Loadable from 'react-loadable';
-import {GetBaidu} from "./utils/constant"
 import IndexPage from "./pages/IndexPage"
 
 function setTitle(title) {
@@ -31,11 +30,9 @@ function RouterConfig({browserHistory}) {
     return (
         <BrowserRouter>
             <Switch>
-                <GetBaidu>
-                    <Route exact path="/" component={IndexPage} onEnter={setTitle('Index')}/>
-                    <Route path="/suite/:org" component={LoaderModelListPage} onEnter={setTitle('Suite')}/>
-                    <Route path="/pic/:modelId" component={LoaderModelPicPage} onEnter={setTitle('Model')}/>
-                </GetBaidu>
+                <Route exact path="/" component={IndexPage} onEnter={setTitle('Index')}/>
+                <Route path="/suite/:org" component={LoaderModelListPage} onEnter={setTitle('Suite')}/>
+                <Route path="/pic/:modelId" component={LoaderModelPicPage} onEnter={setTitle('Model')}/>
             </Switch>
         </BrowserRouter>
     );

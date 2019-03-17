@@ -9,7 +9,11 @@ const listbypage = (params) =>
 const listModelPics = (params) =>
     Request(params, `${BEAUTYLEG_API}/listModelPics`);
 
+const listGroupByOrg = (params) =>
+    Request(params, `${BEAUTYLEG_API}/listGroupByOrg`);
+
 export {
     listbypage,
     listModelPics,
+    listGroupByOrg,
 };

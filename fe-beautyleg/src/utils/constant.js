@@ -1,25 +1,6 @@
-// const DOMAIN = 'http://doc.chenjingtalk.com';
-const DOMAIN = 'http://localhost:8080';
+const DOMAIN = 'https://doc.chenjingtalk.com';
+// const DOMAIN = 'http://localhost:8080';
 // const DOMAIN = 'https://easy-mock.com/mock/5bff5a0e7eb9262450270ec0';
-
-/**
- * 百度统计
- * @param props
- * @returns {*}
- * @constructor
- */
-const GetBaidu = props => {
-    let children = props.children;
-    // eslint-disable-next-line
-    let _hmt = _hmt || [];
-    (function () {
-        const hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?xxx";
-        const s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-    })();
-    return children;
-};
 
 /**
  * 打印debug调试日志
@@ -54,7 +35,6 @@ function genData(pIndex = 0, numRows = 20, top = 20) {
 
 export {
     DOMAIN,
-    GetBaidu,
     debug,
     genData,
 };

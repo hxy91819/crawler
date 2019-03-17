@@ -64,4 +64,12 @@ public class BeautyLegService {
         return PageHelper.startPage(pageNum, pageSize)
                 .doSelectPage(() -> beautyModelPicReaderDao.selectPicUrls(modelId));
     }
+
+    /**
+     * 按摄影机构分组
+     * @return
+     */
+    public List<BeautyModel> listGroupByOrg(){
+        return beautyModelReaderDao.selectGroupbyOrg();
+    }
 }

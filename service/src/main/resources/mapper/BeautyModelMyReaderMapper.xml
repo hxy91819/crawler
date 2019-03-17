@@ -24,4 +24,12 @@
         where org = #{org}
         order by id desc
     </select>
+
+    <select id="selectGroupbyOrg" resultMap="BaseResultMap">
+        select
+        org, max(thumb_pic) as thumb_pic
+        from t_beauty_model
+        group by org
+    </select>
+
 </mapper>

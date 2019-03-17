@@ -1,6 +1,7 @@
 package bwjava.service.controller;
 
 import bwjava.service.dto.ListPageVO;
+import bwjava.service.entity.BeautyModel;
 import bwjava.service.entity.BeautyModelPic;
 import bwjava.service.service.BeautyLegService;
 import com.alibaba.fastjson.JSON;
@@ -54,5 +55,15 @@ public class BeautyLegController {
     public String listModelPics(@RequestParam long modelId, @RequestParam int pageNum, @RequestParam int pageSize) {
         Page<BeautyModelPic> beautyModelPics = beautyLegService.listModelPics(modelId, pageNum, pageSize);
         return JSON.toJSONString(beautyModelPics);
+    }
+
+    /**
+     * 分组获取机构信息
+     *
+     * @return
+     */
+    @GetMapping("/listGroupByOrg")
+    public List<BeautyModel> listGroupByOrg() {
+        return beautyLegService.listGroupByOrg();
     }
 }

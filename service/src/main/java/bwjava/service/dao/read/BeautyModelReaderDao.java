@@ -13,4 +13,6 @@ public interface BeautyModelReaderDao {
     List<BeautyModel> selectEntranceurlThumbpic(@Param("org") String org, @Param("searchContent") String searchContent);
 
     List<BeautyModel> selectIdEntranceurl(@Param("org") String org);
+
+    List<BeautyModel> selectGroupbyOrg();
 }
