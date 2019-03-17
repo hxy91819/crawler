@@ -1,5 +1,5 @@
 /* eslint no-dupe-keys: 0 */
-import {ListView, SearchBar} from 'antd-mobile';
+import {ListView, SearchBar, NoticeBar} from 'antd-mobile';
 import React from 'react';
 import {debug, genData} from "../utils/constant"
 import {listbypage} from "../utils/api"
@@ -137,36 +137,41 @@ class ModelListPage extends React.Component {
             );
         };
         return (
-            <ListView
-                ref={el => this.lv = el}
-                dataSource={this.state.dataSource}
-                renderHeader={() => <SearchBar placeholder="Search" maxLength={8}
-                                               onSubmit={value => {
-                                                   this.initParam()
-                                                   searchContent = value;
-                                                   this.getData()
-                                               }}
-                                               onClear={() => {
-                                                   this.initParam()
-                                                   searchContent = undefined
-                                                   this.getData()
-                                               }}
-                />}
-                renderFooter={() => (<div style={{padding: 30, textAlign: 'center'}}>
-                    {this.state.reachEnd ? 'The End' : (this.state.isLoading ? 'Loading...' : 'Loaded')}
-                </div>)}
-                renderRow={row}
-                renderSeparator={separator}
-                className="am-list"
-                pageSize={4}
-                useBodyScroll
-                onScroll={() => {
-                    console.log('scroll');
-                }}
-                scrollRenderAheadDistance={500}
-                onEndReached={this.onEndReached}
-                onEndReachedThreshold={10}
-            />
+            <div>
+                <NoticeBar mode="link" action={<a href={'https://www.meituri.com/'}>去看看</a>}>
+                    本站仅供交流学习使用，支持原创，请访问源站点
+                </NoticeBar>
+                <ListView
+                    ref={el => this.lv = el}
+                    dataSource={this.state.dataSource}
+                    renderHeader={() => <SearchBar placeholder="Search" maxLength={8}
+                                                   onSubmit={value => {
+                                                       this.initParam()
+                                                       searchContent = value;
+                                                       this.getData()
+                                                   }}
+                                                   onClear={() => {
+                                                       this.initParam()
+                                                       searchContent = undefined
+                                                       this.getData()
+                                                   }}
+                    />}
+                    renderFooter={() => (<div style={{padding: 30, textAlign: 'center'}}>
+                        {this.state.reachEnd ? 'The End' : (this.state.isLoading ? 'Loading...' : 'Loaded')}
+                    </div>)}
+                    renderRow={row}
+                    renderSeparator={separator}
+                    className="am-list"
+                    pageSize={4}
+                    useBodyScroll
+                    onScroll={() => {
+                        console.log('scroll');
+                    }}
+                    scrollRenderAheadDistance={500}
+                    onEndReached={this.onEndReached}
+                    onEndReachedThreshold={10}
+                />
+            </div>
         );
     }
 
