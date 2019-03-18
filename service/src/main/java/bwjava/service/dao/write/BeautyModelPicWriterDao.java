@@ -18,4 +18,12 @@ public interface BeautyModelPicWriterDao {
     int deleteByModelId(Long modelId);
 
     int insertBatch(List<BeautyModelPic> records);
+
+    /**
+     * 批量更新
+     *
+     * @param records
+     * @return
+     */
+    int updateBatch(List<BeautyModelPic> records);
 }

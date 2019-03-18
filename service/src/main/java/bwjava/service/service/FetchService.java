@@ -1,5 +1,6 @@
 package bwjava.service.service;
 
+import bwjava.service.dao.read.BeautyModelPicReaderDao;
 import bwjava.service.dao.read.BeautyModelReaderDao;
 import bwjava.service.dao.write.BeautyModelPicWriterDao;
 import bwjava.service.dao.write.BeautyModelWriterDao;
@@ -15,6 +16,7 @@ import com.bwjava.util.ExecutorServiceUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.base.Preconditions;
+import com.google.common.util.concurrent.RateLimiter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -156,6 +158,29 @@ public class FetchService {
                 log.info("insert batch count:{}", count);
             };
             ExecutorServiceUtil.getInstance().execute(insertRunnable);
+        }
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    private RateLimiter rateLimiter = RateLimiter.create(100);
+
+    @Resource
+    private BeautyModelPicReaderDao beautyModelPicReaderDao;
+
+
+    /**
+     * 修复排序号
+     */
+    public void fixSortNo() {
+        while (true) {
+            int pageSize = 5000;
+            Page<BeautyModelPic> single = PageHelper.startPage(1, pageSize).doSelectPage(() -> beautyModelPicReaderDao.selectIdPicurl());
+            if (single.isEmpty()) {
+                return;
+            }
+            single.forEach(beautyModelPic -> beautyModelPic.setSortNo(BeautyLegUtil.getPicSortNumber(beautyModelPic.getPicUrl())));
+            int updateCount = beautyModelPicWriterDao.updateBatch(single);
+            log.info("update Count:{}", updateCount);
         }
     }
 }

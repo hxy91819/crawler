@@ -53,4 +53,14 @@ public class FetchController {
         fetchService.fetchAndSaveBeautyPicsByPage(org, pageNum, pageSize);
         return "ok";
     }
+
+
+    /**
+     * 修复排序号
+     */
+    @RequestMapping("/fixSortNo")
+    public String fixSortNo() {
+        fetchService.fixSortNo();
+        return "ok";
+    }
 }

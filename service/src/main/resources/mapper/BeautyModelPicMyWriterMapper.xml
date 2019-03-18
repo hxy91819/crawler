@@ -8,12 +8,24 @@
   </delete>
 
     <insert id="insertBatch" parameterType="ArrayList">
-        insert into t_beauty_model_pic (id, model_id, pic_url)
+        insert into t_beauty_model_pic (id, model_id, pic_url, sort_no)
         <foreach collection="list" item="item" index="index" separator="union all">
             select
             #{item.id,jdbcType=BIGINT},
             #{item.modelId,jdbcType=BIGINT},
-            #{item.picUrl,jdbcType=VARCHAR}
+            #{item.picUrl,jdbcType=VARCHAR},
+            #{item.sortNo,jdbcType=VARCHAR}
         </foreach>
     </insert>
+
+    <update id="updateBatch" parameterType="ArrayList">
+        update t_beauty_model_pic set sort_no =
+        <foreach collection="list" item="item" index="index" separator=" " open="case id" close="end">
+            when #{item.id} then #{item.sortNo}
+        </foreach>
+        where id in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </update>
 </mapper>

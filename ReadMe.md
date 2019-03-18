@@ -103,4 +103,27 @@ curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyPics?org=FEILIN%e5%97%
 curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyList?url=https%3a%2f%2fwww.meituri.com%2fx%2f66%2f
 
 curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyPics?org=%e6%b3%a2%e8%90%9d%e7%a4%beBoLoli%e5%86%99%e7%9c%9f%e5%a5%97%e5%9b%be%e5%85%a8%e9%9b%86
+
+
+curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyList?url=https%3a%2f%2fwww.meituri.com%2fx%2f59%2f \
+ && curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyList?url=https%3a%2f%2fwww.meituri.com%2fx%2f69%2f \
+ && curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyList?url=https%3a%2f%2fwww.meituri.com%2fx%2f55%2f \
+ && curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyList?url=https%3a%2f%2fwww.meituri.com%2fx%2f31%2f \
+ && curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyList?url=https%3a%2f%2fwww.meituri.com%2fx%2f14%2f \
+ && curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyList?url=https%3a%2f%2fwww.meituri.com%2fx%2f45%2f \
+ 
+
+curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyPics?org=XIUREN%e7%a7%80%e4%ba%ba%e7%bd%91%e5%86%99%e7%9c%9f%e5%85%a8%e9%9b%86 \
+&& curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyPics?org=LeYuan%e6%98%9f%e4%b9%90%e5%9b%ad%e5%86%99%e7%9c%9f%e9%9b%86%e5%9b%be%e7%89%87 \
+&& curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyPics?org=%e5%be%a1%e5%a5%b3%e9%83%8eDKGirl%e5%86%99%e7%9c%9f%e5%a5%97%e5%9b%be%e5%85%a8%e9%9b%86 \
+&& curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyPics?org=%e5%85%8b%e6%8b%89%e5%a5%b3%e7%a5%9eKELAGIRLS%e5%86%99%e7%9c%9f%e5%a5%97%e5%9b%be%e5%85%a8%e9%9b%86 \
+&& curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyPics?org=IESS%e5%bc%82%e6%80%9d%e8%b6%a3%e5%90%91%e4%b8%9d%e4%ba%ab%e5%ae%b6%e5%86%99%e7%9c%9f%e5%a5%97%e5%9b%be%e5%85%a8%e9%9b%86 \
+&& curl http://localhost:8080/manage/fetch/fetchAndSaveBeautyPics?org=%e5%a4%b4%e6%9d%a1%e5%a5%b3%e7%a5%9e%e5%86%99%e7%9c%9f%e5%9b%be%e7%89%87 
+ 
+```
+
+## 修复排序号
+
+```
+curl http://localhost:8080/manage/fetch/fixSortNo
 ```

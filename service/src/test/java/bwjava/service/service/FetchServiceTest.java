@@ -56,4 +56,9 @@ public class FetchServiceTest {
     public void testFetchByPage() {
         fetchService.fetchAndSaveBeautyPicsByPage("秀人网MyGirl美媛馆写真集大全", 1, 8);
     }
+
+    @Test
+    public void testFixSortNo(){
+        fetchService.fixSortNo();
+    }
 }
