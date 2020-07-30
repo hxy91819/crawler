@@ -1,6 +1,6 @@
 # 简易爬虫框架-项目结构
 
-项目最终的示例网站：https://doc.chenjingtalk.com
+项目最终的示例网站：https://doc.chenjingtalk.com（网站已关闭）
 
 如果您的浏览器图片显示异常，可尝试使用Firefox打开。原因是Google浏览器对于防盗链支持比较好，会传输Refer信息到服务器。
 
